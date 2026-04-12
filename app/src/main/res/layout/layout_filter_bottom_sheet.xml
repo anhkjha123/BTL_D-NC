@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:padding="24dp">
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="4dp"
+        android:background="#DDDDDD"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFilterHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Lọc"
+        android:textColor="@color/text_grey_900"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Hoạt động với các tin tức"
+        android:textColor="#9E9E9E"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFilterHeader" />
+
+    <Button
+        android:id="@+id/btnAdminManage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/bg_grey_100"
+        android:text="Quản lý"
+        android:textColor="#000000"
+        android:layout_marginTop="4dp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvFilterHeader" />
+
+    <TextView
+        android:id="@+id/tvTimeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Khoảng thời gian"
+        android:textColor="@color/text_grey_600"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFilterHeader"
+        app:layout_goneMarginTop="28dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTimeTitle">
+
+        <RadioButton android:id="@+id/rbToday" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Hôm nay" android:textSize="16sp" android:paddingVertical="10dp"/>
+        <RadioButton android:id="@+id/rbThisWeek" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Tuần này" android:textSize="16sp" android:paddingVertical="10dp"/>
+        <RadioButton android:id="@+id/rbThisMonth" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Tháng này" android:textSize="16sp" android:paddingVertical="10dp"/>
+    </RadioGroup>
+    <TextView
+        android:id="@+id/tvStatusTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Trạng thái ( 0 )"
+        android:textColor="@color/text_grey_600"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cgCategories" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:chipSpacing="8dp"
+        app:singleLine="false"
+        app:singleSelection="false"
+        app:layout_constraintTop_toBottomOf="@id/tvStatusTitle">
+
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chờ duyệt" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Đang xử lý" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hoàn thành" style="@style/Widget.CustomChip.Filter"/>
+    </com.google.android.material.chip.ChipGroup>
+    <TextView
+        android:id="@+id/tvCategoryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Danh mục ( 0 )"
+        android:textColor="@color/text_grey_600"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rgTime" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:chipSpacing="8dp"
+        app:singleLine="false"
+        app:singleSelection="false"
+        app:layout_constraintTop_toBottomOf="@id/tvCategoryTitle">
+
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Điện" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nước" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Vệ sinh" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thang máy" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Trật tự" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Góp ý" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="An ninh" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bảo trì" style="@style/Widget.CustomChip.Filter"/>
+        <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PCCC" style="@style/Widget.CustomChip.Filter"/>
+    </com.google.android.material.chip.ChipGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/cgStatus">
+
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/bg_grey_100"
+            android:text="XÓA"
+            android:textColor="#000000"
+            app:cornerRadius="12dp" />
+
+        <Button
+            android:id="@+id/btnApply"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/bg_black_apply"
+            android:text="XONG"
+            android:textColor="#FFFFFF"
+            app:cornerRadius="12dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

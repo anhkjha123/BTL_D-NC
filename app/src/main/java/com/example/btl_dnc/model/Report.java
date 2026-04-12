@@ -17,6 +17,6 @@ public class Report {
     public void setId(String id) {
         this.id = id;
     }
-
+    public String userAvatar;
     public Report() {}
 }

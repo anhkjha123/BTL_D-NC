@@ -25,7 +25,8 @@ import java.io.InputStream;
 public class CreateReportActivity extends AppCompatActivity {
 
     FrameLayout container;
-
+    boolean isAvatarLoaded = false;
+    String userAvatarBase64 = "";
     String name = "", email = "", content = "", type = "";
     Uri imageUri;
 
@@ -61,13 +62,38 @@ public class CreateReportActivity extends AppCompatActivity {
 
         EditText edtName = v.findViewById(R.id.edtName);
         EditText edtEmail = v.findViewById(R.id.edtEmail);
-
+        Button btnNext1 = v.findViewById(R.id.btnNext1);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
             if (email.isEmpty()) email = user.getEmail();
             if (name.isEmpty() && user.getDisplayName() != null)
                 name = user.getDisplayName();
+            if (!isAvatarLoaded) {
+                // 1. Tạm thời khóa nút Next để tránh người dùng bấm nhanh quá
+                btnNext1.setEnabled(false);
+                btnNext1.setText("Đang tải dữ liệu...");
+
+                FirebaseFirestore.getInstance().collection("user").document(user.getUid())
+                        .get()
+                        .addOnSuccessListener(doc -> {
+                            if (doc.exists() && doc.contains("avatar")) {
+                                userAvatarBase64 = doc.getString("avatar");
+                                android.util.Log.d("DEBUG", "Đã lấy được Avatar Base64!");
+                            }
+
+                            // 2. Load xong (dù có avatar hay không) thì mở khóa nút Next
+                            isAvatarLoaded = true;
+                            btnNext1.setEnabled(true);
+                            btnNext1.setText("Tiếp tục");
+                        })
+                        .addOnFailureListener(e -> {
+                            // 3. Nếu mạng lỗi, cũng phải mở khóa nút Next để họ đi tiếp (chấp nhận mất avatar)
+                            isAvatarLoaded = true;
+                            btnNext1.setEnabled(true);
+                            btnNext1.setText("Tiếp tục");
+                        });
+            }
         }
 
         edtName.setText(name);
@@ -131,20 +157,39 @@ public class CreateReportActivity extends AppCompatActivity {
     private String encodeImage(Uri uri) {
         try {
             InputStream is = getContentResolver().openInputStream(uri);
-            byte[] bytes = new byte[is.available()];
-            is.read(bytes);
+            // Đọc ảnh thành Bitmap
+            android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeStream(is);
+
+            // Tính toán thu nhỏ ảnh (Tối đa 800x800 để chống tràn bộ nhớ 1MB của Firestore)
+            int maxWidth = 800;
+            int maxHeight = 800;
+            float ratio = Math.min(
+                    (float) maxWidth / bitmap.getWidth(),
+                    (float) maxHeight / bitmap.getHeight());
+            int width = Math.round((float) ratio * bitmap.getWidth());
+            int height = Math.round((float) ratio * bitmap.getHeight());
+
+            android.graphics.Bitmap resizedBitmap = android.graphics.Bitmap.createScaledBitmap(bitmap, width, height, true);
+
+            // Nén ảnh ra mảng byte (Định dạng JPEG, chất lượng 70%)
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            resizedBitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 70, baos);
+            byte[] bytes = baos.toByteArray();
+
             return Base64.encodeToString(bytes, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-
     // ===== SAVE =====
     void saveReport() {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) return;
+        if (user == null) {
+            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Report r = new Report();
         r.userId = user.getUid();
@@ -154,23 +199,29 @@ public class CreateReportActivity extends AppCompatActivity {
         r.type = type;
         r.createdAt = System.currentTimeMillis();
         r.status = "Chờ duyệt";
-
+        r.userAvatar = userAvatarBase64;
         if (imageUri != null) {
             r.imageBase64 = encodeImage(imageUri);
+            if (r.imageBase64 == null) {
+                Toast.makeText(this, "Lỗi xử lý hình ảnh", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
         FirebaseFirestore.getInstance()
                 .collection("reports")
                 .add(r)
                 .addOnSuccessListener(doc -> {
-
                     String id = doc.getId();
-
-
                     doc.update("id", id);
 
                     Toast.makeText(this, "Đã gửi chờ duyệt", Toast.LENGTH_SHORT).show();
                     finish();
+                })
+                .addOnFailureListener(e -> {
+                    // Hiển thị lỗi rõ ràng nếu Firebase từ chối lưu
+                    e.printStackTrace();
+                    Toast.makeText(this, "Lỗi khi lưu: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BTL_DĐNC</string>
+    <string name="default_web_client_id">644190044441-16nd8h8e85r4ofne8lq0np8l2anpaes0.apps.googleusercontent.com</string>
     <string name="facebook_app_id">APP_ID_FACEBOOK</string>
     <string name="facebook_client_token">CLIENT_TOKEN_FACEBOOK</string>
     <string name="fb_login_protocol_scheme">fbAPP_ID_FACEBOOK</string>
