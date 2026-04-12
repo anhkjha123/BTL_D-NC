@@ -11,6 +11,7 @@ public class Report {
     public String type;
     public long createdAt;
     public String status;
+    public String title;
     public String imageBase64;
     public Timestamp updateAt;
 

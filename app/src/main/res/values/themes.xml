@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="Base.Theme.BTL_DĐNC" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.BTL_DNC" parent="Theme.MaterialComponents.Light.NoActionBar">
     </style>
 
     <style name="Theme.BTL_DĐNC" parent="Base.Theme.BTL_DĐNC" />

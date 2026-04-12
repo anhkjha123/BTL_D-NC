@@ -28,6 +28,7 @@ public class CreateReportActivity extends AppCompatActivity {
     boolean isAvatarLoaded = false;
     String userAvatarBase64 = "";
     String name = "", email = "", content = "", type = "";
+    String title = "";
     Uri imageUri;
 
     ActivityResultLauncher<String> picker;
@@ -113,11 +114,14 @@ public class CreateReportActivity extends AppCompatActivity {
         container.removeAllViews();
         container.addView(v);
 
+        EditText edtTitle = v.findViewById(R.id.edtTitle);
         EditText edtContent = v.findViewById(R.id.edtContent);
 
+        edtTitle.setText(title);
         edtContent.setText(content);
 
         v.findViewById(R.id.btnNext2).setOnClickListener(view -> {
+            title = edtTitle.getText().toString();
             content = edtContent.getText().toString();
             showStep3();
         });
@@ -200,6 +204,7 @@ public class CreateReportActivity extends AppCompatActivity {
         r.createdAt = System.currentTimeMillis();
         r.status = "Chờ duyệt";
         r.userAvatar = userAvatarBase64;
+        r.title = title;
         if (imageUri != null) {
             r.imageBase64 = encodeImage(imageUri);
             if (r.imageBase64 == null) {

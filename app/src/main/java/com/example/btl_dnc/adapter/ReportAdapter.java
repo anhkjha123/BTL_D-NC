@@ -1,5 +1,5 @@
 package com.example.btl_dnc.adapter;
-import com.bumptech.glide.Glide; // Nhớ import Glide lên đầu file
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.btl_dnc.R;
 import com.example.btl_dnc.ReportDetailActivity;
 import com.example.btl_dnc.model.Report;
@@ -22,7 +23,6 @@ import java.util.List;
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder> {
 
     Context context;
-
     List<Report> list;
 
     public ReportAdapter(Context context, List<Report> list) {
@@ -31,13 +31,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgReport;
-        TextView txtTitle, txtDate;
-        // Trong lớp ViewHolder:
-        TextView txtUserName;
-        ImageView imgAvatar;
-
-// Trong hàm tạo ViewHolder:
+        ImageView imgReport, imgAvatar;
+        TextView txtTitle, txtDate, txtUserName;
 
         public ViewHolder(View v) {
             super(v);
@@ -60,33 +55,51 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder h, int i) {
         Report r = list.get(i);
 
-        // ===== TITLE & NAME =====
-        h.txtTitle.setText(r.content != null ? r.content : "");
-        h.txtUserName.setText(r.name != null ? r.name : "Người dùng ẩn danh");
+        // ===== TITLE  =====
+        if (r.title != null && !r.title.trim().isEmpty()) {
+            h.txtTitle.setText(r.title);
+        } else if (r.content != null && !r.content.trim().isEmpty()) {
+            // fallback cho dữ liệu cũ
+            h.txtTitle.setText(r.content);
+        } else {
+            h.txtTitle.setText("");
+        }
+
+        // ===== USER NAME =====
+        h.txtUserName.setText(
+                (r.name != null && !r.name.isEmpty())
+                        ? r.name
+                        : "Người dùng ẩn danh"
+        );
 
         // ===== DATE =====
         if (r.createdAt > 0) {
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(r.createdAt);
+
             String date = "Ngày " + c.get(Calendar.DAY_OF_MONTH)
                     + " Tháng " + (c.get(Calendar.MONTH) + 1)
                     + " Năm " + c.get(Calendar.YEAR);
+
             h.txtDate.setText(date);
         } else {
             h.txtDate.setText("");
         }
 
-        // ===== LOAD ẢNH BÁO CÁO (IMAGE BASE64) =====
+        // ===== IMAGE REPORT =====
         if (r.imageBase64 != null && !r.imageBase64.isEmpty()) {
             try {
                 byte[] imageBytes = Base64.decode(r.imageBase64, Base64.DEFAULT);
+
                 Glide.with(context)
                         .asBitmap()
                         .load(imageBytes)
                         .placeholder(R.color.background_gray)
                         .error(R.color.background_gray)
                         .into(h.imgReport);
+
             } catch (Exception e) {
+                e.printStackTrace();
                 h.imgReport.setBackgroundColor(0xFFDDDDDD);
             }
         } else {
@@ -94,33 +107,37 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             h.imgReport.setBackgroundColor(0xFFDDDDDD);
         }
 
-        // ===== RESET AVATAR (Tránh hiển thị nhầm avatar cũ khi cuộn màn hình) =====
+        // ===== RESET AVATAR =====
         Glide.with(context).clear(h.imgAvatar);
         h.imgAvatar.setImageResource(R.color.background_gray);
 
-        // ===== TẢI AVATAR NGƯỜI DÙNG TỪ BẢNG 'user' =====
+        // ===== LOAD AVATAR FROM FIRESTORE =====
         if (r.userId != null && !r.userId.isEmpty()) {
-            // Lấy trực tiếp từ Firestore dựa trên userId của báo cáo
-            FirebaseFirestore.getInstance().collection("user").document(r.userId)
+
+            FirebaseFirestore.getInstance()
+                    .collection("user")
+                    .document(r.userId)
                     .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            // Giả định trường lưu ảnh trong bảng user là "avatarUrl" (khớp với class User của bạn)
-                            // Nếu bạn dùng tên khác như "avatar" hay "image", hãy đổi chữ "avatarUrl" bên dưới
-                            String avatarData = documentSnapshot.getString("avatarUrl");
+                    .addOnSuccessListener(doc -> {
+
+                        if (doc.exists()) {
+                            String avatarData = doc.getString("avatarUrl");
 
                             if (avatarData != null && !avatarData.isEmpty()) {
+
                                 try {
-                                    // Kiểm tra xem nó là link (http) hay chuỗi Base64
                                     if (avatarData.startsWith("http")) {
+
                                         Glide.with(context)
                                                 .load(avatarData)
                                                 .placeholder(R.color.background_gray)
                                                 .circleCrop()
                                                 .into(h.imgAvatar);
+
                                     } else {
-                                        // Giải mã Base64 nếu lưu bằng chuỗi
+
                                         byte[] avatarBytes = Base64.decode(avatarData, Base64.DEFAULT);
+
                                         Glide.with(context)
                                                 .asBitmap()
                                                 .load(avatarBytes)
@@ -128,6 +145,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
                                                 .circleCrop()
                                                 .into(h.imgAvatar);
                                     }
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -144,7 +162,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         });
     }
 
-    // ===== DECODE BASE64 =====
+    // ===== OPTIONAL: BASE64 =====
     private Bitmap decodeBase64(String base64) {
         try {
             byte[] bytes = Base64.decode(base64, Base64.DEFAULT);
@@ -154,11 +172,14 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             return null;
         }
     }
+
+    // ===== UPDATE LIST =====
     public void updateList(List<Report> newList) {
         list.clear();
         list.addAll(newList);
         notifyDataSetChanged();
     }
+
     @Override
     public int getItemCount() {
         return list != null ? list.size() : 0;
