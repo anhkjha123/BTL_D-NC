@@ -40,7 +40,7 @@ public class BookmarkFragment extends Fragment {
         Button btnAdd = v.findViewById(R.id.btnAdd);
 
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ReportAdapter(getContext(), list);
+        adapter = new ReportAdapter(getContext(), list, "resident");
         rv.setAdapter(adapter);
 
         btnAdd.setOnClickListener(v1 ->

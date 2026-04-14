@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    EditText edtName, edtPhone;
+    EditText edtName, edtPhone, edtStatus; // Đã thêm edtStatus
     Button btnSave, btnChooseImage;
     ImageView imgAvatar;
     ImageButton imgBack;
@@ -35,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         edtName = findViewById(R.id.edtName);
         edtPhone = findViewById(R.id.edtPhone);
+        edtStatus = findViewById(R.id.edtStatus); // Ánh xạ mới
         btnSave = findViewById(R.id.btnSave);
         btnChooseImage = findViewById(R.id.btnChooseImage);
         imgAvatar = findViewById(R.id.imgAvatar);
@@ -42,17 +43,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
         imgBack.setOnClickListener(v -> finish());
 
-
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         loadUser();
 
         btnChooseImage.setOnClickListener(v -> chooseImage());
-
         btnSave.setOnClickListener(v -> save());
     }
 
-    // ===== LOAD USER =====
     void loadUser() {
         FirebaseFirestore.getInstance()
                 .collection("user")
@@ -63,18 +61,19 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (u != null) {
                         edtName.setText(u.name);
                         edtPhone.setText(u.phone);
+                        edtStatus.setText(u.status); // Load status cũ lên
 
                         avatarUrlOld = u.avatarUrl;
 
                         Glide.with(this)
                                 .load(u.avatarUrl)
-                                .placeholder(R.drawable.ic_launcher_background)
+                                .placeholder(R.drawable.placeholder_image)
+                                .circleCrop() // Bo tròn ảnh khi load
                                 .into(imgAvatar);
                     }
                 });
     }
 
-    // ===== CHỌN ẢNH =====
     void chooseImage() {
         Intent i = new Intent(Intent.ACTION_PICK);
         i.setType("image/*");
@@ -84,51 +83,50 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE && data != null) {
+        if (requestCode == PICK_IMAGE && data != null && data.getData() != null) {
             imageUri = data.getData();
-            imgAvatar.setImageURI(imageUri);
+            // Sử dụng Glide để xem trước ảnh bo tròn ngay khi chọn
+            Glide.with(this).load(imageUri).circleCrop().into(imgAvatar);
         }
     }
 
-    // ===== SAVE =====
     void save() {
-        String name = edtName.getText().toString();
-        String phone = edtPhone.getText().toString();
+        String name = edtName.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
+        String status = edtStatus.getText().toString().trim(); // Lấy dữ liệu status
+
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (imageUri != null) {
-            uploadImageAndSave(name, phone);
+            uploadImageAndSave(name, phone, status);
         } else {
-            updateUser(name, phone, avatarUrlOld);
+            updateUser(name, phone, status, avatarUrlOld);
         }
     }
 
-    // ===== UPLOAD ẢNH =====
-    void uploadImageAndSave(String name, String phone) {
-
-        String fileName = "avatar/" + UUID.randomUUID();
+    void uploadImageAndSave(String name, String phone, String status) {
+        String fileName = "avatar/" + uid; // Dùng UID làm tên file để ghi đè ảnh cũ, tiết kiệm Storage
 
         FirebaseStorage.getInstance()
                 .getReference(fileName)
                 .putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot ->
                         taskSnapshot.getStorage().getDownloadUrl()
-                                .addOnSuccessListener(uri -> {
-                                    String url = uri.toString();
-                                    updateUser(name, phone, url);
-                                })
+                                .addOnSuccessListener(uri -> updateUser(name, phone, status, uri.toString()))
                 );
     }
 
-    // ===== UPDATE FIRESTORE =====
-    void updateUser(String name, String phone, String avatarUrl) {
-
+    void updateUser(String name, String phone, String status, String avatarUrl) {
         FirebaseFirestore.getInstance()
                 .collection("user")
                 .document(uid)
                 .update(
                         "name", name,
                         "phone", phone,
+                        "status", status, // Lưu status lên Firestore
                         "avatarUrl", avatarUrl
                 )
                 .addOnSuccessListener(unused -> {

@@ -72,9 +72,27 @@ public class NewsDetailActivity extends AppCompatActivity {
                         tvTitle.setText(n.title);
                         tvContent.setText(n.content);
 
-                        Glide.with(this)
-                                .load(n.imageUrl)
-                                .into(img);
+                        if (n.imageBase64 != null && !n.imageBase64.isEmpty()) {
+                            try {
+                                byte[] decoded = android.util.Base64.decode(n.imageBase64, android.util.Base64.DEFAULT);
+
+                                Glide.with(this)
+                                        .asBitmap()
+                                        .load(decoded)
+                                        .override(800, 500) // 🔥 QUAN TRỌNG: giảm size
+                                        .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.ALL) // 🔥 cache
+                                        .skipMemoryCache(false) // 🔥 giữ cache RAM
+                                        .placeholder(R.drawable.placeholder_image)
+                                        .error(R.drawable.placeholder_image)
+                                        .centerCrop()
+                                        .into(img);
+
+                            } catch (Exception e) {
+                                img.setImageResource(R.drawable.placeholder_image);
+                            }
+                        } else {
+                            img.setImageResource(R.drawable.placeholder_image);
+                        }
                     }
                 });
     }

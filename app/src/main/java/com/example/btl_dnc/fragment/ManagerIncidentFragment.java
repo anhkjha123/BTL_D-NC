@@ -93,7 +93,7 @@ public class ManagerIncidentFragment extends Fragment {
         }
         // Setup RecyclerView
         rvReports.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ReportAdapter(getContext(), filteredReportsList);
+        adapter = new ReportAdapter(getContext(), filteredReportsList, "ADMIN");
         rvReports.setAdapter(adapter);
 
         // Ẩn số lượng kết quả và bộ lọc lúc mới vào

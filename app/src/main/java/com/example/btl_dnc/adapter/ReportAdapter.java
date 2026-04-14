@@ -24,10 +24,11 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
 
     Context context;
     List<Report> list;
-
-    public ReportAdapter(Context context, List<Report> list) {
+    String userRole;
+    public ReportAdapter(Context context, List<Report> list, String userRole) {
         this.context = context;
         this.list = list;
+        this.userRole = userRole;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -158,6 +159,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         h.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ReportDetailActivity.class);
             intent.putExtra("id", r.id);
+            intent.putExtra("USER_ROLE", this.userRole);
             context.startActivity(intent);
         });
     }

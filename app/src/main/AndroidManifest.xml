@@ -8,6 +8,7 @@
 
     <queries>
         <package android:name="com.google.android.gms" />
+
         <intent>
             <action android:name="com.google.android.gms.auth.api.signin.SERVICE_CONFIG_UPDATED" />
         </intent>
@@ -24,7 +25,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BTL_DNC">
         <activity
-            android:name=".NotificationActivity"
+            android:name=".CreateNewsActivity"
             android:exported="false" />
         <activity
             android:name=".ChatbotActivity"

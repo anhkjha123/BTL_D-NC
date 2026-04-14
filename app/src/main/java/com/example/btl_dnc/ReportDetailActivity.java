@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.btl_dnc.adapter.CommentAdapter;
 import com.example.btl_dnc.model.Comment;
 import com.example.btl_dnc.model.Report;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
@@ -28,6 +29,7 @@ public class ReportDetailActivity extends AppCompatActivity {
 
     ImageView imgBack, imgReport;
     TextView tvTitle, tvStatus, tvType, tvTime, tvContent, tvReplyTitle, tvEmptyComment;
+    String userRole; // 2. Biến lưu role
     EditText edtComment;
     Button btnSend;
     RecyclerView rvComment;
@@ -36,7 +38,7 @@ public class ReportDetailActivity extends AppCompatActivity {
 
     String reportID;
     Report currentReport;
-
+    Button btnChangeStatus; // 1. Khai báo nút
     ArrayList<Comment> list;
     CommentAdapter adapter;
     ListenerRegistration commentListener;
@@ -60,7 +62,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         edtComment = findViewById(R.id.edtComment);
         btnSend = findViewById(R.id.btnSend);
         rvComment = findViewById(R.id.rvComment);
-
+        btnChangeStatus = findViewById(R.id.btnChangeStatus);
         layoutReplyCard = findViewById(R.id.layoutReplyCard);
         tvReplyName = findViewById(R.id.tvReplyName);
         tvReplyContent = findViewById(R.id.tvReplyContent);
@@ -69,12 +71,16 @@ public class ReportDetailActivity extends AppCompatActivity {
         imgBack.setOnClickListener(v -> finish());
 
         reportID = getIntent().getStringExtra("id");
+        userRole = getIntent().getStringExtra("USER_ROLE");
+        if (userRole == null) {
+            userRole = "resident"; // Mặc định là user nếu không truyền
+        }
         if (reportID == null || reportID.trim().isEmpty()) {
             Toast.makeText(this, "Thiếu reportID", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
+        setupUIByRole();
         list = new ArrayList<>();
         adapter = new CommentAdapter(this, list);
 
@@ -185,7 +191,59 @@ public class ReportDetailActivity extends AppCompatActivity {
                     showLatestAdminReply();
                 });
     }
+    private void showStatusUpdateDialog() {
+        // 1. Khởi tạo BottomSheetDialog và nạp file XML vừa tạo
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.layout_bottom_sheet_status, null);
+        bottomSheetDialog.setContentView(view);
 
+        // 2. Ánh xạ các thành phần bên trong cái XML đó
+        RadioGroup rgStatus = view.findViewById(R.id.rgStatus);
+        Button btnCancel = view.findViewById(R.id.btnCancelStatus);
+        Button btnConfirm = view.findViewById(R.id.btnConfirmStatus);
+
+        // 3. Đọc trạng thái hiện tại trên giao diện để "Tích sẵn" vào RadioButton tương ứng
+        String currentStatus = tvStatus.getText().toString();
+        if ("Chờ duyệt".equals(currentStatus)) rgStatus.check(R.id.rbPending);
+        else if ("Đang xử lý".equals(currentStatus)) rgStatus.check(R.id.rbProcessing);
+        else if ("Đã xử lý".equals(currentStatus)) rgStatus.check(R.id.rbCompleted);
+
+        // 4. Sự kiện nút Hủy
+        btnCancel.setOnClickListener(v -> bottomSheetDialog.dismiss());
+
+        // 5. Sự kiện nút Xác nhận
+        btnConfirm.setOnClickListener(v -> {
+            int selectedId = rgStatus.getCheckedRadioButtonId();
+            String newStatus = "";
+
+            if (selectedId == R.id.rbPending) newStatus = "Chờ duyệt";
+            else if (selectedId == R.id.rbProcessing) newStatus = "Đang xử lý";
+            else if (selectedId == R.id.rbCompleted) newStatus = "Đã xử lý";
+
+            if (!newStatus.isEmpty() && !newStatus.equals(currentStatus)) {
+                // Gọi hàm cập nhật lên Firebase
+                updateStatusInFirestore(newStatus);
+            }
+
+            bottomSheetDialog.dismiss(); // Tắt popup
+        });
+
+        // 6. Hiển thị lên màn hình
+        bottomSheetDialog.show();
+    }
+    private void updateStatusInFirestore(String newStatus) {
+        if (reportID == null || reportID.isEmpty()) return;
+
+        FirebaseFirestore.getInstance()
+                .collection("reports") // Đảm bảo tên collection này đúng với Firebase của bạn
+                .document(reportID)
+                .update("status", newStatus)
+                .addOnSuccessListener(aVoid -> {
+                    // Giao diện sẽ tự động nhảy màu/chữ nhờ hàm snapshotListener bạn đã viết trước đó
+                })
+                .addOnFailureListener(e -> {
+                });
+    }
     private void showLatestAdminReply() {
         Comment latestAdmin = null;
 
@@ -263,6 +321,25 @@ public class ReportDetailActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Không đọc được tài khoản", Toast.LENGTH_SHORT).show());
+    }
+    private void setupUIByRole() {
+        if ("ADMIN".equals(userRole)) {
+            // ADMIN
+            if (btnChangeStatus != null) {
+                btnChangeStatus.setVisibility(View.VISIBLE);
+                btnChangeStatus.setOnClickListener(v -> {
+                    // TODO: Mở BottomSheet hoặc Dialog cập nhật Firestore ở đây
+                    showStatusUpdateDialog();
+                });
+            }
+            edtComment.setHint("Nhập phản hồi với tư cách Admin...");
+        } else {
+            // USER
+            if (btnChangeStatus != null) {
+                btnChangeStatus.setVisibility(View.GONE);
+            }
+            edtComment.setHint("Nhập bình luận của bạn...");
+        }
     }
 
     @Override

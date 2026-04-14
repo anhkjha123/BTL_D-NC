@@ -8,7 +8,7 @@ public class News {
     public String content;
     public Timestamp createAt;
     public Timestamp updateAt;
-    public String imageUrl;
+    public String imageBase64;
     public String title;
     public Timestamp getCreateAt() {
         return createAt;

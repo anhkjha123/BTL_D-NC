@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
     NewsAdapter adapter;
 
     ImageView btnNoti;
-    TextView tvBadge,tvWelcome;
+    TextView tvBadge, tvWelcome;
 
     ListenerRegistration notiListener;
 
@@ -46,8 +46,15 @@ public class HomeFragment extends Fragment {
 
         // ===== RECYCLER =====
         list = new ArrayList<>();
-        adapter = new NewsAdapter(list);
 
+        // ĐÃ CHỈNH SỬA: Truyền Context, list, Vai trò "USER" và null cho sự kiện xóa
+        adapter = new NewsAdapter(
+                getContext(),
+                list,
+                "ADMIN", // Role admin
+                NewsAdapter.TYPE_MANAGER, // Card lớn
+                null
+        );
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 
@@ -55,6 +62,7 @@ public class HomeFragment extends Fragment {
         btnNoti.setOnClickListener(view -> {
             startActivity(new Intent(getContext(), NotificationActivity.class));
         });
+
         loadUser();
         loadNews();
         listenNotification();
@@ -122,8 +130,8 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
-    void loadUser() {
 
+    void loadUser() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) return;
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -147,6 +155,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

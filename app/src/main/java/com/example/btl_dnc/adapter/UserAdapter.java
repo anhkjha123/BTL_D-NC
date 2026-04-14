@@ -25,7 +25,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvEmail, tvDetail;
+        TextView tvName, tvEmail, tvDetail, tvStatus; // 1. BỔ SUNG tvStatus NẾU BẠN MUỐN HIỂN THỊ
         ImageView img;
 
         public ViewHolder(View v) {
@@ -34,6 +34,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             tvEmail = v.findViewById(R.id.tvEmail);
             tvDetail = v.findViewById(R.id.tvDetail);
             img = v.findViewById(R.id.imgAvatar);
+
+            // 2. ÁNH XẠ tvStatus (Đảm bảo trong file item_user.xml của bạn đã có 1 TextView mang id này)
+            // tvStatus = v.findViewById(R.id.tvStatus);
         }
     }
 
@@ -47,17 +50,32 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder h, int i) {
         User u = list.get(i);
 
-        h.tvName.setText(u.name);
-        h.tvEmail.setText(u.email);
+        h.tvName.setText(u.name != null ? u.name : "Chưa cập nhật tên");
+        h.tvEmail.setText(u.email != null ? u.email : "");
+
+        // 3. HIỂN THỊ STATUS LÊN GIAO DIỆN (Bỏ comment nếu bạn có dùng tvStatus ở trên)
+        /*
+        if (u.status != null && !u.status.isEmpty()) {
+            h.tvStatus.setText(u.status);
+            h.tvStatus.setVisibility(View.VISIBLE);
+        } else {
+            h.tvStatus.setVisibility(View.GONE);
+        }
+        */
 
         Glide.with(context)
                 .load(u.avatarUrl)
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.placeholder_image) // Nên dùng placeholder có bo góc
                 .into(h.img);
 
         h.tvDetail.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProfileActivity.class);
             intent.putExtra("userID", u.id);
+
+            // 4. TRUYỀN STATUS SANG MÀN HÌNH CHI TIẾT
+            intent.putExtra("USER_STATUS", u.status);
+            intent.putExtra("USER_ROLE", u.role); // Có thể truyền thêm cả role nếu cần
+
             context.startActivity(intent);
         });
     }

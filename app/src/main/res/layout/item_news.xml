@@ -1,34 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="12dp"
-    android:background="#FFFFFF"
-    android:layout_marginBottom="12dp"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="24dp"
+    android:background="#FFFFFF">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:text="Lịch thu phí quản lý tháng 2"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/tvDate"
-        android:text="Ngày 2 Tháng 2 Năm 2026"
-        android:textSize="12sp"
-        android:textColor="#888"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <ImageView
-        android:id="@+id/imgNews"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgNewsCover"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:layout_marginTop="8dp"
-        android:src="@mipmap/ic_launcher"/>
+        android:background="#DDDDDD"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/RoundedSquareShape" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tvNewsItemTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnDeleteNews"
+        app:layout_constraintStart_toEndOf="@id/imgNewsCover"
+        app:layout_constraintTop_toTopOf="@id/imgNewsCover" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgAuthorAvatar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:background="#EEEEEE"
+        app:layout_constraintStart_toStartOf="@id/tvNewsItemTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvNewsItemTitle"
+        app:shapeAppearanceOverlay="@style/CircleShape" />
+
+    <TextView
+        android:id="@+id/tvAuthorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Đang tải..."
+        android:textColor="#757575"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgAuthorAvatar"
+        app:layout_constraintStart_toEndOf="@id/imgAuthorAvatar"
+        app:layout_constraintTop_toTopOf="@id/imgAuthorAvatar" />
+
+    <TextView
+        android:id="@+id/tvNewsItemDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#9E9E9E"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgNewsCover"
+        app:layout_constraintStart_toStartOf="@id/tvNewsItemTitle" />
+
+    <ImageButton
+        android:id="@+id/btnDeleteNews"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_close_circle"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#FF5252" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
