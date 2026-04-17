@@ -77,20 +77,32 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         if (h.img != null) {
             if (n.imageBase64 != null && !n.imageBase64.isEmpty()) {
-                try {
-                    byte[] decoded = android.util.Base64.decode(n.imageBase64, android.util.Base64.DEFAULT);
+
+                // Nếu là URL (http/https)
+                if (n.imageBase64.startsWith("http")) {
                     Glide.with(context)
-                            .asBitmap()
-                            .load(decoded)
-                            .override(400, 300)
-                            .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.ALL)
-                            .centerCrop()
+                            .load(n.imageBase64)
                             .placeholder(R.drawable.placeholder_image)
                             .error(R.drawable.placeholder_image)
+                            .centerCrop()
                             .into(h.img);
-                } catch (Exception e) {
-                    h.img.setImageResource(R.drawable.placeholder_image);
+
+                } else {
+                    // Base64
+                    try {
+                        byte[] decoded = android.util.Base64.decode(n.imageBase64, android.util.Base64.DEFAULT);
+                        Glide.with(context)
+                                .asBitmap()
+                                .load(decoded)
+                                .centerCrop()
+                                .placeholder(R.drawable.placeholder_image)
+                                .error(R.drawable.placeholder_image)
+                                .into(h.img);
+                    } catch (Exception e) {
+                        h.img.setImageResource(R.drawable.placeholder_image);
+                    }
                 }
+
             } else {
                 h.img.setImageResource(R.drawable.placeholder_image);
             }
@@ -118,7 +130,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                     if (deleteListener != null) deleteListener.onDeleteClick(n.id, i);
                 });
             } else {
-                h.btnDeleteNews.setVisibility(View.GONE);
+                h.btnDeleteNews.setVisibility(View.INVISIBLE);
             }
         }
 
