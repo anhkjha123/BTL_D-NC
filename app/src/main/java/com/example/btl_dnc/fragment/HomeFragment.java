@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         adapter = new NewsAdapter(
                 getContext(),
                 list,
-                "ADMIN",
+                "RESIDENT",
                 NewsAdapter.TYPE_MANAGER,
                 null
         );

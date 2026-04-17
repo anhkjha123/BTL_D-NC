@@ -2,6 +2,7 @@ package com.example.btl_dnc.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,38 +75,43 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             String time = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(n.createAt.toDate());
             h.tvDate.setText(time);
         }
+        Glide.with(context).clear(h.img);
+        h.img.setImageDrawable(null);
 
-        if (h.img != null) {
-            if (n.imageBase64 != null && !n.imageBase64.isEmpty()) {
+        if (n.imageBase64 != null && !n.imageBase64.trim().isEmpty()) {
 
-                // Nếu là URL (http/https)
-                if (n.imageBase64.startsWith("http")) {
-                    Glide.with(context)
-                            .load(n.imageBase64)
-                            .placeholder(R.drawable.placeholder_image)
-                            .error(R.drawable.placeholder_image)
-                            .centerCrop()
-                            .into(h.img);
+            String img = n.imageBase64.trim();
+            Log.d("IMG_TEST", "Load image: " + img);
 
-                } else {
-                    // Base64
-                    try {
-                        byte[] decoded = android.util.Base64.decode(n.imageBase64, android.util.Base64.DEFAULT);
-                        Glide.with(context)
-                                .asBitmap()
-                                .load(decoded)
-                                .centerCrop()
-                                .placeholder(R.drawable.placeholder_image)
-                                .error(R.drawable.placeholder_image)
-                                .into(h.img);
-                    } catch (Exception e) {
-                        h.img.setImageResource(R.drawable.placeholder_image);
-                    }
-                }
+            if (img.startsWith("http")) {
+
+                Glide.with(context)
+                        .load(img)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.placeholder_image)
+                        .diskCacheStrategy(com.bumptech.glide.load.engine.DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .centerCrop()
+                        .into(h.img);
 
             } else {
-                h.img.setImageResource(R.drawable.placeholder_image);
+
+                try {
+                    byte[] decoded = android.util.Base64.decode(img, android.util.Base64.DEFAULT);
+                    Glide.with(context)
+                            .asBitmap()
+                            .load(decoded)
+                            .centerCrop()
+                            .placeholder(R.drawable.placeholder_image)
+                            .error(R.drawable.placeholder_image)
+                            .into(h.img);
+                } catch (Exception e) {
+                    h.img.setImageResource(R.drawable.placeholder_image);
+                }
             }
+
+        } else {
+            h.img.setImageResource(R.drawable.placeholder_image);
         }
 
         // 2. Tự động load thông tin Admin đăng bài
@@ -124,13 +130,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         // 3. Phân quyền nút Xóa
         if (h.btnDeleteNews != null) {
-            if ("ADMIN".equals(userRole)) {
+            if (userRole != null && userRole.trim().equalsIgnoreCase("ADMIN")) {
                 h.btnDeleteNews.setVisibility(View.VISIBLE);
                 h.btnDeleteNews.setOnClickListener(v -> {
                     if (deleteListener != null) deleteListener.onDeleteClick(n.id, i);
                 });
             } else {
-                h.btnDeleteNews.setVisibility(View.INVISIBLE);
+                h.btnDeleteNews.setVisibility(View.GONE);
             }
         }
 
