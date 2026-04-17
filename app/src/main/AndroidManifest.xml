@@ -48,6 +48,9 @@
             android:name=".NewsDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".manager.ProfileActivity"
             android:exported="false" />
         <activity

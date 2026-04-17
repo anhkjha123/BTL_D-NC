@@ -95,7 +95,7 @@ public class ChatbotActivity extends AppCompatActivity {
         new android.os.Handler().postDelayed(() -> {
             removeThinking();
             saveMessage(reply, false);
-        }, 800); // delay cho giống AI 😎
+        }, 800);
     }
 
     // ===== SAVE =====

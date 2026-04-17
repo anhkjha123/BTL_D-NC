@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ManagerIncidentFragment extends Fragment {
 
-    // Khai báo các view
+
     private TextView tvMainTitle, tvSubTitle;
     private RecyclerView rvReports;
     private EditText edtSearch;
@@ -42,7 +42,7 @@ public class ManagerIncidentFragment extends Fragment {
     private boolean hasStartedSearching = false;
     private TextView tvListTitle, tvResultCount, tvSort;
 
-    // Khai báo Adapter, List và Firestore
+
     private ReportAdapter adapter;
     private List<Report> allReportsList;
     private List<Report> filteredReportsList;
@@ -56,7 +56,7 @@ public class ManagerIncidentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manager_incident, container, false);
 
-        // Ánh xạ View
+
         rvReports = view.findViewById(R.id.rvIncidents);
         edtSearch = view.findViewById(R.id.edtSearch);
         btnBackSearch = view.findViewById(R.id.btnBackSearch);
@@ -66,14 +66,14 @@ public class ManagerIncidentFragment extends Fragment {
         tvSort = view.findViewById(R.id.tvSort);
         tvMainTitle = view.findViewById(R.id.tvMainTitle);
         tvSubTitle = view.findViewById(R.id.tvSubTitle);
-        // Khởi tạo Firestore và dữ liệu
+
         db = FirebaseFirestore.getInstance();
         allReportsList = new ArrayList<>();
         filteredReportsList = new ArrayList<>();
-// Ánh xạ nút
+
         TextView btnFilterOptions = view.findViewById(R.id.btnFilterOptions);
 
-// Gán sự kiện mở Popup
+
         if (btnFilterOptions != null) {
             btnFilterOptions.setOnClickListener(v -> {
                 FilterBottomSheet bottomSheet = new FilterBottomSheet();
@@ -82,34 +82,34 @@ public class ManagerIncidentFragment extends Fragment {
                     currentTimeFilter = timeFilter;
                     currentCategoryFilters = categories;
                     currentStatusFilters = statuses;
-                    // Cập nhật giao diện (Thêm các khối danh mục bên phải)
+
                     updateFilterUI();
 
-                    // Lọc lại dữ liệu RecyclerView
+
                     applyAllFilters();
                 });
                 bottomSheet.show(getParentFragmentManager(), "FilterBottomSheet");
             });
         }
-        // Setup RecyclerView
+
         rvReports.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ReportAdapter(getContext(), filteredReportsList, "ADMIN");
         rvReports.setAdapter(adapter);
 
-        // Ẩn số lượng kết quả và bộ lọc lúc mới vào
+
         resetUIState();
 
-        // Xử lý sự kiện tìm kiếm
+
         setupSearchLogic();
 
-        // Gọi dữ liệu từ Firebase
+
         loadDataFromFirebase();
 
         return view;
     }
 
     private void setupSearchLogic() {
-        // SỰ KIỆN QUAN TRỌNG: Chạm vào ô tìm kiếm
+
         edtSearch.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 // 1. Đánh dấu là đã bắt đầu tìm kiếm vĩnh viễn
@@ -122,7 +122,7 @@ public class ManagerIncidentFragment extends Fragment {
             }
         });
 
-        // Sự kiện khi gõ chữ
+
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -137,12 +137,11 @@ public class ManagerIncidentFragment extends Fragment {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Nút quay lại (Mũi tên)
+
         btnBackSearch.setOnClickListener(v -> {
             edtSearch.setText("");
             edtSearch.clearFocus();
-            // Gọi resetUIState để ẩn nút Back, nhưng vì hasStartedSearching = true
-            // nên tiêu đề lớn vẫn sẽ bị ẩn vĩnh viễn theo logic trong resetUIState.
+
             resetUIState();
         });
     }
@@ -155,7 +154,7 @@ public class ManagerIncidentFragment extends Fragment {
             resetUIState();
         } else {
             for (Report report : allReportsList) {
-                // Kiểm tra null an toàn và tìm kiếm theo nội dung
+
                 if (report.content != null && report.content.toLowerCase().contains(query.toLowerCase())) {
                     filteredReportsList.add(report);
                 }
@@ -172,13 +171,13 @@ public class ManagerIncidentFragment extends Fragment {
         tvResultCount.setVisibility(View.GONE);
         tvSort.setVisibility(View.GONE);
 
-        // LOGIC ẨN VĨNH VIỄN:
+
         if (hasStartedSearching) {
-            // Nếu đã từng chạm vào search, ẩn luôn tiêu đề
+
             if (tvMainTitle != null) tvMainTitle.setVisibility(View.GONE);
             if (tvSubTitle != null) tvSubTitle.setVisibility(View.GONE);
         } else {
-            // Chỉ hiện khi mới vào App và chưa chạm vào search lần nào
+
             if (tvMainTitle != null) tvMainTitle.setVisibility(View.VISIBLE);
             if (tvSubTitle != null) tvSubTitle.setVisibility(View.VISIBLE);
         }
@@ -188,17 +187,16 @@ public class ManagerIncidentFragment extends Fragment {
     }
 
     private void updateSearchUIState(String query) {
-        // Xóa hoặc comment dòng check empty này đi để nút Lọc hiện ra ngay lập tức
-        // if (query.isEmpty()) { resetUIState(); return; }
+
         if (query.trim().isEmpty() && !hasStartedSearching) {
             return;
         }
         hasStartedSearching = true;
 
         btnBackSearch.setVisibility(View.VISIBLE);
-        layoutFilters.setVisibility(View.VISIBLE); // HIỆN CỤM NÚT LỌC
+        layoutFilters.setVisibility(View.VISIBLE);
 
-        // Chỉ hiện "X kết quả tìm thấy" khi thực sự có gõ chữ
+
         if (query.trim().isEmpty()) {
             tvResultCount.setVisibility(View.GONE);
             tvSort.setVisibility(View.GONE);
@@ -254,7 +252,7 @@ public class ManagerIncidentFragment extends Fragment {
                     filteredReportsList.addAll(allReportsList);
                     adapter.notifyDataSetChanged();
 
-                    // Cập nhật lại các dòng chữ (Ví dụ: "News", "X Kết quả tìm thấy")
+
                     resetUIState();
 
                 })
@@ -284,7 +282,7 @@ public class ManagerIncidentFragment extends Fragment {
         }
     }
 
-    // Hàm phụ trợ tạo giao diện cho từng khối
+
     private void addFilterChipToLayout(String text) {
         TextView chip = new TextView(getContext());
         chip.setText(text);

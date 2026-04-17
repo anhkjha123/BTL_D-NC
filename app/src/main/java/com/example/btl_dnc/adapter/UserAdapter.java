@@ -25,7 +25,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvEmail, tvDetail, tvStatus; // 1. BỔ SUNG tvStatus NẾU BẠN MUỐN HIỂN THỊ
+        TextView tvName, tvEmail, tvDetail, tvStatus;
         ImageView img;
 
         public ViewHolder(View v) {
@@ -35,8 +35,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             tvDetail = v.findViewById(R.id.tvDetail);
             img = v.findViewById(R.id.imgAvatar);
 
-            // 2. ÁNH XẠ tvStatus (Đảm bảo trong file item_user.xml của bạn đã có 1 TextView mang id này)
-            // tvStatus = v.findViewById(R.id.tvStatus);
+
         }
     }
 
@@ -53,28 +52,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         h.tvName.setText(u.name != null ? u.name : "Chưa cập nhật tên");
         h.tvEmail.setText(u.email != null ? u.email : "");
 
-        // 3. HIỂN THỊ STATUS LÊN GIAO DIỆN (Bỏ comment nếu bạn có dùng tvStatus ở trên)
-        /*
-        if (u.status != null && !u.status.isEmpty()) {
-            h.tvStatus.setText(u.status);
-            h.tvStatus.setVisibility(View.VISIBLE);
-        } else {
-            h.tvStatus.setVisibility(View.GONE);
-        }
-        */
+
 
         Glide.with(context)
                 .load(u.avatarUrl)
-                .placeholder(R.drawable.placeholder_image) // Nên dùng placeholder có bo góc
+                .placeholder(R.drawable.placeholder_image)
                 .into(h.img);
 
         h.tvDetail.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProfileActivity.class);
             intent.putExtra("userID", u.id);
 
-            // 4. TRUYỀN STATUS SANG MÀN HÌNH CHI TIẾT
+
             intent.putExtra("USER_STATUS", u.status);
-            intent.putExtra("USER_ROLE", u.role); // Có thể truyền thêm cả role nếu cần
+            intent.putExtra("USER_ROLE", u.role);
 
             context.startActivity(intent);
         });

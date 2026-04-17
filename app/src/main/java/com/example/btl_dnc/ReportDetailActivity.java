@@ -29,7 +29,7 @@ public class ReportDetailActivity extends AppCompatActivity {
 
     ImageView imgBack, imgReport;
     TextView tvTitle, tvStatus, tvType, tvTime, tvContent, tvReplyTitle, tvEmptyComment;
-    String userRole; // 2. Biến lưu role
+    String userRole;
     EditText edtComment;
     Button btnSend;
     RecyclerView rvComment;
@@ -38,7 +38,7 @@ public class ReportDetailActivity extends AppCompatActivity {
 
     String reportID;
     Report currentReport;
-    Button btnChangeStatus; // 1. Khai báo nút
+    Button btnChangeStatus;
     ArrayList<Comment> list;
     CommentAdapter adapter;
     ListenerRegistration commentListener;
@@ -70,10 +70,12 @@ public class ReportDetailActivity extends AppCompatActivity {
 
         imgBack.setOnClickListener(v -> finish());
 
+
+
         reportID = getIntent().getStringExtra("id");
         userRole = getIntent().getStringExtra("USER_ROLE");
         if (userRole == null) {
-            userRole = "resident"; // Mặc định là user nếu không truyền
+            userRole = "resident";
         }
         if (reportID == null || reportID.trim().isEmpty()) {
             Toast.makeText(this, "Thiếu reportID", Toast.LENGTH_SHORT).show();
@@ -133,8 +135,9 @@ public class ReportDetailActivity extends AppCompatActivity {
         if ("Đang xử lý".equals(r.status)) {
             tvStatus.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
         } else if ("Đã xử lý".equals(r.status)) {
-            tvStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
-        } else {
+            tvStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));}
+
+         else {
             tvStatus.setTextColor(getResources().getColor(android.R.color.black));
         }
 
@@ -234,15 +237,51 @@ public class ReportDetailActivity extends AppCompatActivity {
     private void updateStatusInFirestore(String newStatus) {
         if (reportID == null || reportID.isEmpty()) return;
 
-        FirebaseFirestore.getInstance()
-                .collection("reports") // Đảm bảo tên collection này đúng với Firebase của bạn
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Lấy thông tin report trước
+        db.collection("reports")
                 .document(reportID)
-                .update("status", newStatus)
-                .addOnSuccessListener(aVoid -> {
-                    // Giao diện sẽ tự động nhảy màu/chữ nhờ hàm snapshotListener bạn đã viết trước đó
+                .get()
+                .addOnSuccessListener(doc -> {
+
+                    if (!doc.exists()) return;
+
+                    String userId = doc.getString("userId");
+                    String content = doc.getString("content");
+
+                    // UPDATE STATUS
+                    db.collection("reports")
+                            .document(reportID)
+                            .update("status", newStatus)
+                            .addOnSuccessListener(aVoid -> {
+
+                                //  TẠO NOTIFICATION
+                                if (userId != null) {
+
+                                    com.example.btl_dnc.model.Notification noti =
+                                            new com.example.btl_dnc.model.Notification();
+
+                                    noti.userId = userId;
+                                    noti.title = "Cập nhật báo cáo";
+                                    noti.message = "Báo cáo của bạn đã chuyển sang: " + newStatus;
+                                    noti.type = "reports";
+                                    noti.refId = reportID;
+                                    noti.isRead = false;
+                                    noti.createdAt = Timestamp.now();
+
+                                    db.collection("notifications")
+                                            .add(noti);
+                                }
+
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(this, "Lỗi cập nhật", Toast.LENGTH_SHORT).show()
+                            );
                 })
-                .addOnFailureListener(e -> {
-                });
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Không lấy được report", Toast.LENGTH_SHORT).show()
+                );
     }
     private void showLatestAdminReply() {
         Comment latestAdmin = null;
@@ -328,7 +367,7 @@ public class ReportDetailActivity extends AppCompatActivity {
             if (btnChangeStatus != null) {
                 btnChangeStatus.setVisibility(View.VISIBLE);
                 btnChangeStatus.setOnClickListener(v -> {
-                    // TODO: Mở BottomSheet hoặc Dialog cập nhật Firestore ở đây
+
                     showStatusUpdateDialog();
                 });
             }

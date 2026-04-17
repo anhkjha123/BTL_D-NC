@@ -122,7 +122,7 @@ public class NewsDetailActivity extends AppCompatActivity {
                 });
     }
 
-    // ===== SEND COMMENT (CHỈ LƯU userId) =====
+    // ===== SEND COMMENT  =====
     private void sendComment() {
 
         String text = edtComment.getText().toString().trim();

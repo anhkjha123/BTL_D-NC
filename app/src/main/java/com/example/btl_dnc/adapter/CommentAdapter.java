@@ -19,7 +19,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.VH> {
     Context context;
     ArrayList<Comment> list;
 
-    // 🔥 cache user để tránh gọi lại nhiều lần
+
     Map<String, String> nameCache = new HashMap<>();
     Map<String, String> avatarCache = new HashMap<>();
 

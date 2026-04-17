@@ -26,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // ===== ÁNH XẠ FULL (bạn thiếu mấy cái này nên crash) =====
+
         tvName = findViewById(R.id.tvName);
         tvEmail = findViewById(R.id.tvEmail);
         tvApartment = findViewById(R.id.tvApartment);
@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         img = findViewById(R.id.imgAvatar);
         btnBlock = findViewById(R.id.btnBlock);
 
-        // ===== LẤY USER ID =====
+
         userID = getIntent().getStringExtra("userID");
 
         if (userID == null || userID.isEmpty()) {
@@ -75,9 +75,9 @@ public class ProfileActivity extends AppCompatActivity {
                         tvUsername.setText(u.email != null ? u.email : "");
 
                         tvApartment.setText("Số căn hộ: " +
-                                (u.apartmentID != null ? u.apartmentID : ""));
+                                (u.apartmentID != null ? u.apartmentID : "012"));
 
-                        tvBuilding.setText("Tòa nhà: A"); // nếu chưa có field
+                        tvBuilding.setText("Tòa nhà: A");
                         tvArea.setText("Diện tích: 75m²");
 
                         // ===== DATE =====

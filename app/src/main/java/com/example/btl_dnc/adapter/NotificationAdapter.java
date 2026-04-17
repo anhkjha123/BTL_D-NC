@@ -91,7 +91,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             } else if ("reports".equals(n.type)) {
 
                 Intent intent = new Intent(context, ReportDetailActivity.class);
-                intent.putExtra("reportID", n.refId);
+                intent.putExtra("id", n.refId);
                 context.startActivity(intent);
 
             }

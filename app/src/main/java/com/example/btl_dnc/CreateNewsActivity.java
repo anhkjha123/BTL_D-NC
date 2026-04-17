@@ -168,7 +168,7 @@ public class CreateNewsActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ Convert ảnh sang Base64
+    //  Convert ảnh sang Base64
     private String encodeImageToBase64(Uri uri) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(uri);
@@ -202,7 +202,7 @@ public class CreateNewsActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ Lưu Firestore
+    // Lưu Firestore
     private void saveNewsToFirestore() {
         btnNext.setEnabled(false);
         btnNext.setText("Đang lưu...");

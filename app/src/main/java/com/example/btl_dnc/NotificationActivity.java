@@ -2,6 +2,7 @@ package com.example.btl_dnc;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,6 +45,12 @@ public class NotificationActivity extends AppCompatActivity {
 
     void loadNoti() {
 
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
+            finish(); // đóng màn hình luôn
+            return;
+        }
+
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         listener = FirebaseFirestore.getInstance()
@@ -72,7 +79,6 @@ public class NotificationActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 });
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

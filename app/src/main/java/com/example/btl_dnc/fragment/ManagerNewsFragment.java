@@ -35,8 +35,8 @@ public class ManagerNewsFragment extends Fragment {
     private RecyclerView rvNews;
 
     private NewsAdapter adapter;
-    private ArrayList<News> newsList;      // Danh sách gốc chứa toàn bộ tin tức
-    private ArrayList<News> filteredList;  // Danh sách dùng để hiển thị khi tìm kiếm
+    private ArrayList<News> newsList;
+    private ArrayList<News> filteredList;
 
     @Nullable
     @Override
@@ -56,7 +56,7 @@ public class ManagerNewsFragment extends Fragment {
         newsList = new ArrayList<>();
         filteredList = new ArrayList<>();
 
-        // 1. Initialize Adapter and set it ONLY ONCE
+
         adapter = new NewsAdapter(getContext(), filteredList, "ADMIN", NewsAdapter.TYPE_MANAGER, this::onDeleteNewsClick);
         rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNews.setAdapter(adapter);
@@ -78,7 +78,7 @@ public class ManagerNewsFragment extends Fragment {
                 filteredList.clear();
 
                 if (query.isEmpty()) {
-                    // Nếu không gõ gì thì hiện toàn bộ danh sách
+
                     filteredList.addAll(newsList);
                 } else {
                     // Lọc theo tiêu đề
@@ -97,11 +97,11 @@ public class ManagerNewsFragment extends Fragment {
     }
 
     private void fetchNewsData() {
-        // Gán Listener vào biến
+
         newsListener = FirebaseFirestore.getInstance().collection("news")
                 .orderBy("createAt", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
-                    // Check an toàn
+
                     if (!isAdded() || getContext() == null) return;
                     if (error != null || value == null) return;
 
@@ -119,7 +119,7 @@ public class ManagerNewsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Cắt đứt kết nối với Firebase khi Fragment không còn hiển thị
+
         if (newsListener != null) {
             newsListener.remove();
         }
@@ -141,18 +141,18 @@ public class ManagerNewsFragment extends Fragment {
 
     // Xử lý sự kiện khi Admin bấm nút X
     private void onDeleteNewsClick(String newsId, int position) {
-        // Hiển thị hộp thoại xác nhận trước khi xóa thật
+
         new AlertDialog.Builder(requireContext())
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa bản tin này không?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
 
-                    // Thực hiện xóa trên Firebase
+
                     FirebaseFirestore.getInstance().collection("news").document(newsId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(getContext(), "Đã xóa tin tức thành công", Toast.LENGTH_SHORT).show();
-                                // Không cần gọi lệnh xóa item trong Adapter vì snapshotListener ở trên sẽ tự phát hiện và cập nhật UI.
+
                             })
                             .addOnFailureListener(e -> {
                                 Toast.makeText(getContext(), "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_SHORT).show();

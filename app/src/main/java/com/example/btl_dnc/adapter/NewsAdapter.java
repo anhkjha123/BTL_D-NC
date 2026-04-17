@@ -28,8 +28,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     String userRole;
     OnNewsDeleteListener deleteListener;
 
-    public static final int TYPE_MANAGER = 1; // Card lớn (Dùng cho Home/Manager News)
-    public static final int TYPE_PROFILE = 2; // List ngang (Dùng cho Profile Admin)
+    public static final int TYPE_MANAGER = 1;
+    public static final int TYPE_PROFILE = 2;
     private int currentType;
 
     public interface OnNewsDeleteListener {

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         nav = findViewById(R.id.bottomNav);
         btnChatbot = findViewById(R.id.btnChatbot);
 
-        // ===== LOAD FRAGMENT MẶC ĐỊNH =====
+        // ===== LOAD FRAGMENT =====
         loadFragment(new HomeFragment());
 
         // ===== NAVIGATION =====

@@ -47,7 +47,7 @@ public class ManagerProfileFragment extends Fragment {
 
     private NewsAdapter adapter;
     private ArrayList<News> postList;
-    private ListenerRegistration profileListener; // MỚI THÊM
+    private ListenerRegistration profileListener;
     private ListenerRegistration postsListener;
 
     private boolean isGridView = false;
@@ -151,7 +151,7 @@ public class ManagerProfileFragment extends Fragment {
         popupMenu.show();
     }
 
-    // ===== LỖI KHÔNG HIỂN THỊ ĐƯỢC XỬ LÝ Ở ĐÂY =====
+
     private void loadAdminProfile() {
         profileListener= db.collection("user").document(currentUserId)
                 .addSnapshotListener((doc, error) -> {
@@ -187,9 +187,7 @@ public class ManagerProfileFragment extends Fragment {
         Query query = db.collection("news")
                 .whereEqualTo("authorID", currentUserId);
 
-        // Firestore requires a composite index for whereEqualTo + orderBy
-        // If it only works after ManagerNewsFragment, it's because that fragment 
-        // caches everything, allowing local sorting.
+
         query = query.orderBy("createAt", isSortDescending ? Query.Direction.DESCENDING : Query.Direction.ASCENDING);
 
         postsListener = query.addSnapshotListener((value, error) -> {
@@ -197,7 +195,7 @@ public class ManagerProfileFragment extends Fragment {
 
             if (error != null) {
                 android.util.Log.e("FirestoreError", "Error fetching posts: " + error.getMessage());
-                // This Toast will likely show a link to create the index in the console
+
                 Toast.makeText(getContext(), "Lỗi tải bài viết: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 return;
             }

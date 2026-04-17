@@ -24,7 +24,7 @@ public class FilterBottomSheet extends BottomSheetDialogFragment {
     private List<String> initialCategoryFilters = new ArrayList<>();
     private List<String> initialStatusFilters = new ArrayList<>();
 
-    // THÊM HÀM NÀY ĐỂ NHẬN DỮ LIỆU TỪ FRAGMENT TRUYỀN VÀO
+
     public void setInitialFilters(String time, List<String> categories, List<String> statuses) {
         this.initialTimeFilter = time != null ? time : "";
         if (categories != null) this.initialCategoryFilters = new ArrayList<>(categories);

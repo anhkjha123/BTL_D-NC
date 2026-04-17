@@ -47,12 +47,12 @@ public class HomeFragment extends Fragment {
         // ===== RECYCLER =====
         list = new ArrayList<>();
 
-        // ĐÃ CHỈNH SỬA: Truyền Context, list, Vai trò "USER" và null cho sự kiện xóa
+
         adapter = new NewsAdapter(
                 getContext(),
                 list,
-                "ADMIN", // Role admin
-                NewsAdapter.TYPE_MANAGER, // Card lớn
+                "ADMIN",
+                NewsAdapter.TYPE_MANAGER,
                 null
         );
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -137,7 +137,7 @@ public class HomeFragment extends Fragment {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         FirebaseFirestore.getInstance()
-                .collection("users")
+                .collection("user")
                 .document(uid)
                 .get()
                 .addOnSuccessListener(doc -> {

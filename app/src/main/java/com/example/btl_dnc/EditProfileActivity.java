@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    EditText edtName, edtPhone, edtStatus; // Đã thêm edtStatus
+    EditText edtName, edtPhone, edtStatus;
     Button btnSave, btnChooseImage;
     ImageView imgAvatar;
     ImageButton imgBack;
@@ -35,7 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         edtName = findViewById(R.id.edtName);
         edtPhone = findViewById(R.id.edtPhone);
-        edtStatus = findViewById(R.id.edtStatus); // Ánh xạ mới
+        edtStatus = findViewById(R.id.edtStatus);
         btnSave = findViewById(R.id.btnSave);
         btnChooseImage = findViewById(R.id.btnChooseImage);
         imgAvatar = findViewById(R.id.imgAvatar);
@@ -61,14 +61,14 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (u != null) {
                         edtName.setText(u.name);
                         edtPhone.setText(u.phone);
-                        edtStatus.setText(u.status); // Load status cũ lên
+                        edtStatus.setText(u.status);
 
                         avatarUrlOld = u.avatarUrl;
 
                         Glide.with(this)
                                 .load(u.avatarUrl)
                                 .placeholder(R.drawable.placeholder_image)
-                                .circleCrop() // Bo tròn ảnh khi load
+                                .circleCrop()
                                 .into(imgAvatar);
                     }
                 });
@@ -85,7 +85,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && data != null && data.getData() != null) {
             imageUri = data.getData();
-            // Sử dụng Glide để xem trước ảnh bo tròn ngay khi chọn
+
             Glide.with(this).load(imageUri).circleCrop().into(imgAvatar);
         }
     }
@@ -126,7 +126,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 .update(
                         "name", name,
                         "phone", phone,
-                        "status", status, // Lưu status lên Firestore
+                        "status", status,
                         "avatarUrl", avatarUrl
                 )
                 .addOnSuccessListener(unused -> {

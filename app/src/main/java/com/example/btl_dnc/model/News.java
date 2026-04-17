@@ -18,5 +18,5 @@ public class News {
         return updateAt;
     }
 
-    public News() {} // bắt buộc cho Firebase
+    public News() {}
 }
