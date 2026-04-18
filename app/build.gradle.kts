@@ -34,6 +34,29 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    signingConfigs {
+        create("release") {
+            storeFile = file("btl-common.keystore")
+            storePassword = "123456"
+            keyAlias = "btl_key"
+            keyPassword = "123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        debug {
+            signingConfig = signingConfigs.getByName("release")
+        }}
 }
 
 dependencies {

@@ -1,5 +1,9 @@
 package com.example.btl_dnc;
-
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,11 +69,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
                         avatarUrlOld = u.avatarUrl;
 
-                        Glide.with(this)
-                                .load(u.avatarUrl)
-                                .placeholder(R.drawable.placeholder_image)
-                                .circleCrop()
-                                .into(imgAvatar);
+                        if (u.avatarUrl != null && u.avatarUrl.startsWith("/9j")) {
+                            loadBase64Image(u.avatarUrl);
+                        } else {
+                            Glide.with(this)
+                                    .load(u.avatarUrl)
+                                    .placeholder(R.drawable.placeholder_image)
+                                    .circleCrop()
+                                    .into(imgAvatar);
+                        }
                     }
                 });
     }
@@ -89,7 +97,30 @@ public class EditProfileActivity extends AppCompatActivity {
             Glide.with(this).load(imageUri).circleCrop().into(imgAvatar);
         }
     }
+    String encodeImage(Uri uri) {
+        try {
+            InputStream is = getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos); // giảm dung lượng
+            byte[] bytes = baos.toByteArray();
+
+            return Base64.encodeToString(bytes, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+    void loadBase64Image(String base64) {
+        try {
+            byte[] decoded = Base64.decode(base64, Base64.DEFAULT);
+            Bitmap bmp = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
+            imgAvatar.setImageBitmap(bmp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     void save() {
         String name = edtName.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
@@ -101,14 +132,16 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         if (imageUri != null) {
-            uploadImageAndSave(name, phone, status);
+            String base64 = encodeImage(imageUri);
+            updateUser(name, phone, status, base64);
         } else {
             updateUser(name, phone, status, avatarUrlOld);
         }
+
     }
 
     void uploadImageAndSave(String name, String phone, String status) {
-        String fileName = "avatar/" + uid; // Dùng UID làm tên file để ghi đè ảnh cũ, tiết kiệm Storage
+        String fileName = "avatar/" + uid + ".jpg";
 
         FirebaseStorage.getInstance()
                 .getReference(fileName)
