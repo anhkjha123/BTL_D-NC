@@ -13,6 +13,7 @@ import com.example.btl_dnc.fragment.BookmarkFragment;
 import com.example.btl_dnc.fragment.HomeFragment;
 import com.example.btl_dnc.fragment.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.btl_dnc.fragment.PrivateNotificationFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
             else if (item.getItemId() == R.id.nav_bookmark)
                 loadFragment(new BookmarkFragment());
+
+            else if (item.getItemId() == R.id.nav_notify)
+                loadFragment(new PrivateNotificationFragment());
 
             else
                 loadFragment(new ProfileFragment());
