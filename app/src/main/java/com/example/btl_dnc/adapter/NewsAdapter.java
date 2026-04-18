@@ -71,8 +71,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             h.tvTitle.setText(n.title != null ? n.title : "");
         }
         
-        if (n.createAt != null && h.tvDate != null) {
-            String time = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(n.createAt.toDate());
+        if (n.getCreateAt() != null && h.tvDate != null) {
+            String time = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(n.getCreateAt().toDate());
             h.tvDate.setText(time);
         }
         Glide.with(context).clear(h.img);

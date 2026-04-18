@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.*;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,9 +37,10 @@ public class ReportDetailActivity extends AppCompatActivity {
     LinearLayout layoutReplyCard;
     TextView tvReplyName, tvReplyContent, tvReplyTime;
 
+
     String reportID;
     Report currentReport;
-    Button btnChangeStatus;
+    Button btnChangeStatus, btnDeleteReport;
     ArrayList<Comment> list;
     CommentAdapter adapter;
     ListenerRegistration commentListener;
@@ -62,6 +64,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         edtComment = findViewById(R.id.edtComment);
         btnSend = findViewById(R.id.btnSend);
         rvComment = findViewById(R.id.rvComment);
+        btnDeleteReport = findViewById(R.id.btnDeleteReport);
         btnChangeStatus = findViewById(R.id.btnChangeStatus);
         layoutReplyCard = findViewById(R.id.layoutReplyCard);
         tvReplyName = findViewById(R.id.tvReplyName);
@@ -267,7 +270,7 @@ public class ReportDetailActivity extends AppCompatActivity {
                                     noti.message = "Báo cáo của bạn đã chuyển sang: " + newStatus;
                                     noti.type = "reports";
                                     noti.refId = reportID;
-                                    noti.isRead = false;
+                                    noti.setIsRead(false);
                                     noti.createdAt = Timestamp.now();
 
                                     db.collection("notifications")
@@ -370,17 +373,41 @@ public class ReportDetailActivity extends AppCompatActivity {
 
                     showStatusUpdateDialog();
                 });
+                if (btnDeleteReport != null) {
+                    btnDeleteReport.setVisibility(View.VISIBLE);
+                    // Bắt sự kiện xóa
+                    btnDeleteReport.setOnClickListener(v -> showDeleteConfirmDialog());
+                }
             }
             edtComment.setHint("Nhập phản hồi với tư cách Admin...");
         } else {
             // USER
             if (btnChangeStatus != null) {
                 btnChangeStatus.setVisibility(View.GONE);
+                if (btnDeleteReport != null) btnDeleteReport.setVisibility(View.GONE);
             }
             edtComment.setHint("Nhập bình luận của bạn...");
         }
     }
+    private void showDeleteConfirmDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa vĩnh viễn báo cáo này không?")
+                .setPositiveButton("Xóa", (dialog, which) -> deleteReportFromFirestore())
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+    private void deleteReportFromFirestore() {
+        if (reportID == null || reportID.isEmpty()) return;
 
+        FirebaseFirestore.getInstance().collection("reports").document(reportID)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Đã xóa báo cáo thành công", Toast.LENGTH_SHORT).show();
+                    finish(); // Đóng Activity, quay về màn hình trước đó
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

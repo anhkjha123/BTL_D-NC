@@ -70,16 +70,18 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
 
         // ===== DOT =====
-        h.dot.setVisibility(n.isRead ? View.GONE : View.VISIBLE);
+        h.dot.setVisibility(n.isRead() ? View.GONE : View.VISIBLE);
 
         // ===== CLICK =====
         h.itemView.setOnClickListener(v -> {
 
             // đánh dấu đã đọc
-            FirebaseFirestore.getInstance()
-                    .collection("notifications")
-                    .document(n.id)
-                    .update("isRead", true);
+            if (!n.isRead()) {
+                FirebaseFirestore.getInstance()
+                        .collection("notifications")
+                        .document(n.id)
+                        .update("isRead", true);
+            }
 
             // ===== MỞ THEO TYPE =====
             if ("news".equals(n.type)) {

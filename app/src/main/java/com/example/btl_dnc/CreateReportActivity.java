@@ -15,12 +15,15 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.btl_dnc.model.Report;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateReportActivity extends AppCompatActivity {
 
@@ -30,7 +33,8 @@ public class CreateReportActivity extends AppCompatActivity {
     String name = "", email = "", content = "", type = "";
     String title = "";
     Uri imageUri;
-
+    EditText edtTitle;
+    EditText edtContent;
     ActivityResultLauncher<String> picker;
 
     @Override
@@ -114,8 +118,8 @@ public class CreateReportActivity extends AppCompatActivity {
         container.removeAllViews();
         container.addView(v);
 
-        EditText edtTitle = v.findViewById(R.id.edtTitle);
-        EditText edtContent = v.findViewById(R.id.edtContent);
+        edtTitle = v.findViewById(R.id.edtTitle);
+        edtContent = v.findViewById(R.id.edtContent);
 
         edtTitle.setText(title);
         edtContent.setText(content);
@@ -219,14 +223,30 @@ public class CreateReportActivity extends AppCompatActivity {
                 .addOnSuccessListener(doc -> {
                     String id = doc.getId();
                     doc.update("id", id);
-
+                    pushNotificationToManager(name, id);
                     Toast.makeText(this, "Đã gửi chờ duyệt", Toast.LENGTH_SHORT).show();
                     finish();
+
                 })
                 .addOnFailureListener(e -> {
                     // Hiển thị lỗi rõ ràng nếu Firebase từ chối lưu
                     e.printStackTrace();
                     Toast.makeText(this, "Lỗi khi lưu: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
+    private void pushNotificationToManager(String userName, String incidentId) {
+        Map<String, Object> noti = new HashMap<>();
+        noti.put("type", "INCIDENT_ALERT"); // Phải khớp với điều kiện lọc của Manager
+        noti.put("title", "Sự cố mới từ " + userName);
+        noti.put("message", "Có một sự cố mới vừa được báo cáo. Nhấn để xem chi tiết.");
+        noti.put("incidentId", incidentId);
+        noti.put("isRead", false);
+        noti.put("createAt", Timestamp.now());
+
+        FirebaseFirestore.getInstance().collection("managernotifications")
+                .add(noti)
+                .addOnSuccessListener(doc -> {
+                    android.util.Log.d("NotiLog", "Thông báo đã được tạo thành công!");
                 });
     }
 }

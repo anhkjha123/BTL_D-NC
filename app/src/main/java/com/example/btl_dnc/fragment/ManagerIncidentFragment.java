@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class ManagerIncidentFragment extends Fragment {
     private TextView tvMainTitle, tvSubTitle;
     private RecyclerView rvReports;
     private EditText edtSearch;
+    private com.google.firebase.firestore.ListenerRegistration reportsListener;
     private ImageButton btnBackSearch;
     private com.google.android.material.chip.ChipGroup layoutFilters;
     private boolean hasStartedSearching = false;
@@ -222,45 +224,42 @@ public class ManagerIncidentFragment extends Fragment {
 
     // ===== HÀM LOAD DỮ LIỆU TỪ FIREBASE =====
     private void loadDataFromFirebase() {
+        // 1. Khởi tạo hướng sắp xếp
+        Query query = db.collection("reports")
+                .orderBy("createdAt", Query.Direction.DESCENDING);
 
-        // 1. Khởi tạo hướng sắp xếp (Mới nhất lên đầu)
-        Query.Direction direction = Query.Direction.DESCENDING;
+        // 2. Sử dụng addSnapshotListener để lắng nghe thay đổi (Xóa/Sửa/Thêm)
+        reportsListener = query.addSnapshotListener((value, error) -> {
+            // Kiểm tra an toàn chống sập app khi fragment đã đóng
+            if (!isAdded() || getContext() == null) return;
 
-        // 2. Gọi API từ Firestore
-        FirebaseFirestore.getInstance()
-                .collection("reports")
-                // .whereEqualTo("status", "Đang xử lý") // Tạm ẩn bộ lọc này để Manager thấy toàn bộ báo cáo
-                .orderBy("createdAt", direction)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+            if (error != null) {
+                Log.e("FirestoreError", "Lỗi tải dữ liệu: " + error.getMessage());
+                return;
+            }
 
-                    // Xóa dữ liệu cũ trước khi nạp mới để tránh trùng lặp
-                    allReportsList.clear();
-                    filteredReportsList.clear();
+            if (value != null) {
+                allReportsList.clear();
 
-                    // 3. Duyệt qua từng kết quả trả về
-                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                        Report r = doc.toObject(Report.class);
-
-                        if (r != null) {
-                            r.setId(doc.getId()); // Gán ID của document vào model
-                            allReportsList.add(r);
-                        }
+                for (DocumentSnapshot doc : value.getDocuments()) {
+                    Report r = doc.toObject(Report.class);
+                    if (r != null) {
+                        r.setId(doc.getId());
+                        allReportsList.add(r);
                     }
+                }
 
-                    // 4. Copy dữ liệu sang list hiển thị và cập nhật giao diện
-                    filteredReportsList.addAll(allReportsList);
-                    adapter.notifyDataSetChanged();
+                // Sau khi lấy dữ liệu gốc, chạy lại bộ lọc (để giữ nguyên trạng thái Search/Filter nếu có)
+                applyAllFilters();
 
-
+                // Nếu không đang filter/search thì mặc định reset UI
+                if (edtSearch.getText().toString().isEmpty() &&
+                        currentCategoryFilters.isEmpty() &&
+                        currentStatusFilters.isEmpty()) {
                     resetUIState();
-
-                })
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
-                    // Hiển thị lỗi ra màn hình để dễ debug
-                    Toast.makeText(getContext(), "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                }
+            }
+        });
     }
     private void updateFilterUI() {
         // 1. Xóa các danh mục cũ đã thêm trước đó (Chừa lại vị trí số 0 là nút "Lọc" gốc)
@@ -333,5 +332,13 @@ public class ManagerIncidentFragment extends Fragment {
 
         // Cập nhật lại dòng chữ "X kết quả tìm thấy"
         updateSearchUIState(query);
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Hủy lắng nghe Firebase khi thoát khỏi màn hình này
+        if (reportsListener != null) {
+            reportsListener.remove();
+        }
     }
 }

@@ -222,8 +222,8 @@ public class CreateNewsActivity extends AppCompatActivity {
         news.content = edtContent.getText().toString().trim();
         news.imageBase64 = base64Image;
         news.authorID = uid;
-        news.createAt = Timestamp.now();
-        news.updateAt = Timestamp.now();
+        news.setCreateAt(Timestamp.now());
+        news.setUpdateAt(Timestamp.now());
 
         FirebaseFirestore.getInstance().collection("news")
                 .add(news)

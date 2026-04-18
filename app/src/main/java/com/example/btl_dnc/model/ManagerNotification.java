@@ -2,13 +2,12 @@ package com.example.btl_dnc.model;
 
 import com.google.firebase.Timestamp;
 
-public class Notification {
+public class ManagerNotification {
     public String id;
-    public String userId;
     public String title;
     public String message;
-    public String type;
-    public String refId;
+    public String type; // Ví dụ: "INCIDENT_ALERT"
+    public String incidentId; // ID của sự cố để khi bấm vào có thể mở chi tiết
     private boolean isRead;
 
     @com.google.firebase.firestore.PropertyName("isRead")
@@ -25,7 +24,19 @@ public class Notification {
         }
     }
 
-    public Timestamp createdAt;
+    private Timestamp createAt;
 
-    public Notification() {}
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Object createAt) {
+        if (createAt instanceof Timestamp) {
+            this.createAt = (Timestamp) createAt;
+        } else if (createAt instanceof String) {
+            this.createAt = null; // or parse it
+        }
+    }
+
+    public ManagerNotification() {} // Bắt buộc cho Firebase
 }

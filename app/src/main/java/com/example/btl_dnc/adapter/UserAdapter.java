@@ -51,13 +51,35 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         h.tvName.setText(u.name != null ? u.name : "Chưa cập nhật tên");
         h.tvEmail.setText(u.email != null ? u.email : "");
-
-
-
-        Glide.with(context)
-                .load(u.avatarUrl)
-                .placeholder(R.drawable.placeholder_image)
-                .into(h.img);
+        String avatarData = u.avatarUrl;
+        if (avatarData != null && !avatarData.trim().isEmpty()) {
+            if (avatarData.startsWith("http")) {
+                // Trường hợp 1: Nếu là Link ảnh mạng bình thường
+                Glide.with(context)
+                        .load(avatarData)
+                        .placeholder(R.drawable.placeholder_image)
+                        .error(R.drawable.placeholder_image)
+                        .circleCrop() // Tự động cắt tròn ảnh giống các app chat
+                        .into(h.img);
+            } else {
+                // Trường hợp 2: Nếu ảnh được lưu dưới dạng chuỗi Base64
+                try {
+                    byte[] imageByteArray = android.util.Base64.decode(avatarData, android.util.Base64.DEFAULT);
+                    Glide.with(context)
+                            .asBitmap()
+                            .load(imageByteArray)
+                            .placeholder(R.drawable.placeholder_image)
+                            .error(R.drawable.placeholder_image)
+                            .circleCrop()
+                            .into(h.img);
+                } catch (Exception e) {
+                    h.img.setImageResource(R.drawable.placeholder_image);
+                }
+            }
+        } else {
+            // Trường hợp 3: User chưa cài avatar
+            h.img.setImageResource(R.drawable.placeholder_image);
+        }
 
         h.tvDetail.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProfileActivity.class);

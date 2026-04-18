@@ -17,9 +17,9 @@
 
             <ImageView
                 android:id="@+id/btnNoti"
-                android:layout_width="40dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:src="@drawable/noti"/>
+                android:src="@drawable/noti" />
 
             <TextView
                 android:id="@+id/tvBadge"
