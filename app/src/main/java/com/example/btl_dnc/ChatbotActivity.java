@@ -1,6 +1,8 @@
 package com.example.btl_dnc;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,10 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +37,8 @@ public class ChatbotActivity extends AppCompatActivity {
     ListenerRegistration listener;
 
     String thinkingDocId = null;
+
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,14 +96,8 @@ public class ChatbotActivity extends AppCompatActivity {
         saveMessage(msg, true);
         edt.setText("");
 
-        String reply = handleSmart(msg);
-
         addThinking();
-
-        new android.os.Handler().postDelayed(() -> {
-            removeThinking();
-            saveMessage(reply, false);
-        }, 800);
+        callGeminiWithRetry(msg, 0);
     }
 
     // ===== SAVE =====
@@ -134,48 +136,139 @@ public class ChatbotActivity extends AppCompatActivity {
         thinkingDocId = null;
     }
 
-    // ===== RULE =====
-    String handleSmart(String msg) {
+    // ===== CALL GEMINI =====
+    void callGeminiWithRetry(String userMessage, int retryCount) {
 
-        msg = msg.toLowerCase();
+        String apiKey = "AIzaSyCUe9MIONeFJiIpjVN5rxn8TxVd3sKd1E0";
 
-        // ===== chào hỏi =====
-        if (msg.contains("xin chào") || msg.contains("hello"))
-            return "Xin chào 👋 Bạn cần hỗ trợ gì?";
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
 
-        // ===== báo sự cố =====
-        if (msg.contains("báo") || msg.contains("sự cố") || msg.contains("hỏng"))
-            return "Bạn vào mục Bookmark để gửi báo cáo sự cố nhé.";
+        try {
 
-        // ===== trạng thái =====
-        if (msg.contains("trạng thái") || msg.contains("tiến trình"))
-            return "Bạn vào Bookmark để xem tiến trình xử lý.";
 
-        // ===== điện =====
-        if (msg.contains("điện") || msg.contains("mất điện"))
-            return "Bạn nên báo ngay sự cố điện trong Bookmark để ban quản lý xử lý kịp thời.";
+            String prompt = "Bạn là trợ lý chung cư.\n" +
+                    "- Chỉ trả lời 1 câu không quá dài khoảng 7-8 từ\n" +
+                    "- Chỉ đưa ra kết quả cuối\n" +
+                    "- Không giải thích\n" +
+                    "- Không dùng tiếng Anh\n" +
+                    "- Không hiển thị THOUGHT\n\n" +
+                    "Câu hỏi: " + userMessage;
 
-        // ===== nước =====
-        if (msg.contains("nước") || msg.contains("mất nước"))
-            return "Bạn nên báo sự cố nước trong Bookmark để tránh ảnh hưởng sinh hoạt.";
+            JSONObject part = new JSONObject();
+            part.put("text", prompt);
 
-        // ===== dột =====
-        if (msg.contains("dột") || msg.contains("rò") || msg.contains("chảy nước"))
-            return "Nhà bị dột có thể do hệ thống nước. Bạn hãy vào Bookmark để báo sự cố.";
+            JSONArray parts = new JSONArray();
+            parts.put(part);
 
-        // ===== tin tức =====
-        if (msg.contains("tin") || msg.contains("thông báo"))
-            return "Bạn vào trang Home để xem tin tức mới nhất.";
+            JSONObject content = new JSONObject();
+            content.put("parts", parts);
 
-        // ===== profile =====
-        if (msg.contains("thông tin") || msg.contains("profile"))
-            return "Bạn vào trang Profile để xem hoặc chỉnh sửa thông tin cá nhân.";
+            JSONArray contents = new JSONArray();
+            contents.put(content);
 
-        // ===== fallback  =====
-        return "Mình chưa hiểu rõ 😅 Bạn có thể nói cụ thể hơn hoặc thử từ khóa như: điện, nước, báo sự cố...";
+            JSONObject root = new JSONObject();
+            root.put("contents", contents);
+
+            JSONObject config = new JSONObject();
+            config.put("maxOutputTokens", 256);
+            root.put("generationConfig", config);
+
+            RequestBody body = RequestBody.create(
+                    root.toString(),
+                    MediaType.parse("application/json")
+            );
+
+            Request request = new Request.Builder()
+                    .url("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=" + apiKey)
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    retryOrFail(userMessage, retryCount);
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+
+                    String res = response.body().string();
+                    Log.d("GEMINI_RAW", res);
+
+                    try {
+                        JSONObject obj = new JSONObject(res);
+
+                        if (obj.has("error")) {
+                            int code = obj.getJSONObject("error").getInt("code");
+
+                            if (code == 503 && retryCount < 3) {
+                                handler.postDelayed(() ->
+                                        callGeminiWithRetry(userMessage, retryCount + 1), 1000);
+                                return;
+                            } else {
+                                runOnUiThread(() -> {
+                                    removeThinking();
+                                    saveMessage("AI đang bận 😅", false);
+                                });
+                                return;
+                            }
+                        }
+
+                        JSONArray partsArr = obj
+                                .getJSONArray("candidates")
+                                .getJSONObject(0)
+                                .getJSONObject("content")
+                                .getJSONArray("parts");
+
+                        StringBuilder reply = new StringBuilder();
+
+                        for (int i = 0; i < partsArr.length(); i++) {
+                            String text = partsArr.getJSONObject(i).optString("text");
+
+
+                            if (text.contains("THOUGHT")) continue;
+
+                            reply.append(text);
+                        }
+
+                        String full = reply.toString().trim();
+
+
+                        String[] lines = full.split("\n");
+                        String finalReply = lines[lines.length - 1];
+
+                        runOnUiThread(() -> {
+                            removeThinking();
+                            saveMessage(finalReply, false);
+                        });
+
+                    } catch (Exception e) {
+                        retryOrFail(userMessage, retryCount);
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            retryOrFail(userMessage, retryCount);
+        }
     }
 
-
+    // ===== RETRY =====
+    void retryOrFail(String userMessage, int retryCount) {
+        if (retryCount < 3) {
+            handler.postDelayed(() ->
+                    callGeminiWithRetry(userMessage, retryCount + 1), 1000);
+        } else {
+            runOnUiThread(() -> {
+                removeThinking();
+                saveMessage("AI quá tải 😢", false);
+            });
+        }
+    }
 
     @Override
     protected void onDestroy() {

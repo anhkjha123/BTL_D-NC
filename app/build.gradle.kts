@@ -92,4 +92,6 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
+    implementation("com.google.ai.client.generativeai:generativeai:0.2.0")
 }
