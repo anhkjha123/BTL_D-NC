@@ -16,6 +16,7 @@ import com.example.btl_dnc.CreateReportActivity;
 import com.example.btl_dnc.R;
 import com.example.btl_dnc.adapter.ReportAdapter;
 import com.example.btl_dnc.model.Report;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
@@ -69,10 +70,18 @@ public class BookmarkFragment extends Fragment {
         Query.Direction direction = isNewest
                 ? Query.Direction.DESCENDING
                 : Query.Direction.ASCENDING;
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         FirebaseFirestore.getInstance()
                 .collection("reports")
                 .whereEqualTo("status", "Đang xử lý")
+                .whereEqualTo("userId", uid)
+                .orderBy("createdAt", direction)
+                .get();
+        FirebaseFirestore.getInstance()
+                .collection("reports")
+                .whereEqualTo("status", "Đang xử lý")
+                .whereEqualTo("userId", uid)
                 .orderBy("createdAt", direction)
                 .get()
                 .addOnSuccessListener(value -> {

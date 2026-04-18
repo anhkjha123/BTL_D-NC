@@ -110,10 +110,14 @@ public class LoginActivity extends AppCompatActivity {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
 
         mAuth.signInWithCredential(credential)
-                .addOnSuccessListener(authResult -> checkUserRole())
-                .addOnFailureListener(e ->
-                        Toast.makeText(this, "Google lỗi", Toast.LENGTH_SHORT).show()
-                );
+                .addOnSuccessListener(authResult -> {
+                    Log.d("LOGIN", "Firebase login SUCCESS");
+                    checkUserRole();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("LOGIN", "Firebase login FAIL: " + e.getMessage());
+                    Toast.makeText(this, "Google lỗi", Toast.LENGTH_SHORT).show();
+                });
     }
 
     // ===== CHECK ROLE =====
@@ -175,7 +179,8 @@ public class LoginActivity extends AppCompatActivity {
         newUser.put("apartmentID", "");
         newUser.put("phone", "");
         newUser.put("startDate", FieldValue.serverTimestamp());
-
+        newUser.put("avatarUrl",
+                user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
         db.collection("user").document(uid)
                 .set(newUser)
                 .addOnSuccessListener(unused -> {
