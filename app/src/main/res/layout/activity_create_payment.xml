@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:id="@+id/step1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Họ và tên"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Xem xét lại tài khoản và tên người thông báo"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:layout_marginBottom="32dp" />
+
+        <EditText
+            android:id="@+id/edtAdminName"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_input_gray"
+            android:drawableStart="@drawable/ic_user"
+            android:drawablePadding="12dp"
+            android:padding="16dp"
+            android:enabled="false"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/edtAdminEmail"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_input_gray"
+            android:drawableStart="@drawable/ic_mail"
+            android:drawablePadding="12dp"
+            android:padding="16dp"
+            android:enabled="false"
+            android:textColor="#000000" />
+
+        <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnNext1"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Lưu &amp; Tiếp tục"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#000000"
+            app:cornerRadius="12dp" />
+        <TextView
+            android:id="@+id/btnBack1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textAlignment="center"
+            android:padding="16dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/step2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tạo nội dung thông báo đóng phí"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Điền nội dung bạn muốn thông báo tại đây"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:layout_marginBottom="32dp" />
+
+        <EditText
+            android:id="@+id/edtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_input_gray"
+            android:hint="Điền tiêu đề tại đây"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/edtContent"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_input_gray"
+            android:gravity="top|start"
+            android:hint="Viết thông báo của bạn tại đây"
+            android:padding="16dp" />
+
+        <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnNext2"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Chuyển tiếp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#000000"
+            app:cornerRadius="12dp" />
+        <TextView
+            android:id="@+id/btnBack2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textAlignment="center"
+            android:padding="16dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/step3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cài đặt ngày đóng phí"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="#000000" />
+
+        <EditText
+            android:id="@+id/edtStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_input_gray"
+            android:hint="Ngày bắt đầu (VD: 01/11/2026)"
+            android:padding="16dp"
+            android:focusable="false"
+            android:clickable="true" />
+
+        <EditText
+            android:id="@+id/edtEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_input_gray"
+            android:hint="Hạn cuối đóng phí (VD: 15/11/2026)"
+            android:padding="16dp"
+            android:focusable="false"
+            android:clickable="true" />
+
+        <LinearLayout
+            android:id="@+id/btnPickQR"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/bg_chip_outline">
+
+            <ImageView
+                android:id="@+id/imgQR"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_folder" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chọn ảnh QR nhận tiền"
+                android:textColor="#03A9F4"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnNext3"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Chuyển tiếp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#000000"
+            app:cornerRadius="12dp" />
+        <TextView
+            android:id="@+id/btnBack3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textAlignment="center"
+            android:padding="16dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/step4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chọn ảnh thumbnail"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="#000000" />
+
+        <LinearLayout
+            android:id="@+id/btnPickThumb"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/bg_chip_outline">
+
+            <ImageView
+                android:id="@+id/imgThumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:padding="20dp"
+                android:src="@drawable/ic_folder" />
+        </LinearLayout>
+
+        <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Hoàn tất"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#000000"
+            app:cornerRadius="12dp" />
+        <TextView
+            android:id="@+id/btnBack4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textAlignment="center"
+            android:padding="16dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

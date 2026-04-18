@@ -9,6 +9,8 @@ public class News {
     private Timestamp createAt;
     private Timestamp updateAt;
     public String imageBase64;
+    public String type;
+    public String refId;
     public String title;
 
     public Timestamp getCreateAt() {

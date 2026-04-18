@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.btl_dnc.CreateNewsActivity;
+import com.example.btl_dnc.CreatePaymentActivity;
 import com.example.btl_dnc.EditProfileActivity;
 import com.example.btl_dnc.R;
 import com.example.btl_dnc.adapter.NewsAdapter;
@@ -103,10 +104,25 @@ public class ManagerProfileFragment extends Fragment {
         btnCreatePost.setOnClickListener(v -> {
             String adminName = tvAdminName.getText().toString();
 
-            Intent intent = new Intent(getContext(), CreateNewsActivity.class);
-            intent.putExtra("ADMIN_NAME", adminName);
+            // Mảng chứa các tùy chọn
+            String[] options = {"Tạo tin tức (News) mới", "Tạo thông báo thu phí (Payment)"};
 
-            startActivity(intent);
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Bạn muốn tạo gì?")
+                    .setItems(options, (dialog, which) -> {
+                        if (which == 0) {
+                            // Người dùng chọn "Tạo tin tức mới"
+                            Intent intent = new Intent(getContext(), CreateNewsActivity.class);
+                            intent.putExtra("ADMIN_NAME", adminName);
+                            startActivity(intent);
+                        } else if (which == 1) {
+                            // Người dùng chọn "Tạo thông báo đóng phí"
+                            Intent intent = new Intent(getContext(), CreatePaymentActivity.class);
+                            intent.putExtra("ADMIN_NAME", adminName);
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
         });
         btnViewGrid.setOnClickListener(v -> {
             isGridView = true;

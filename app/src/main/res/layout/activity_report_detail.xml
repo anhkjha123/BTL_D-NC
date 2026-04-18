@@ -84,19 +84,6 @@
                 android:visibility="gone"
                 app:cornerRadius="8dp" />
 
-            <Button
-                android:id="@+id/btnDeleteReport"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="40dp"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="#D32F2F"
-                android:text="Xóa"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                app:cornerRadius="8dp" />
         </LinearLayout>
 
         <LinearLayout

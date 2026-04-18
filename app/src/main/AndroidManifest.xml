@@ -26,6 +26,12 @@
         android:theme="@style/Theme.BTL_DNC"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PaymentDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreatePaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".NotificationIncidentActivity"
             android:exported="false" />
         <activity

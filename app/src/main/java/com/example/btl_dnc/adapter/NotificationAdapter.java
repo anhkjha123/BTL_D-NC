@@ -8,6 +8,7 @@ import android.widget.*;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.btl_dnc.NewsDetailActivity;
+import com.example.btl_dnc.PaymentDetailActivity;
 import com.example.btl_dnc.R;
 import com.example.btl_dnc.ReportDetailActivity;
 import com.example.btl_dnc.model.Notification;
@@ -94,6 +95,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                 Intent intent = new Intent(context, ReportDetailActivity.class);
                 intent.putExtra("id", n.refId);
+                context.startActivity(intent);
+
+            } else if ("payment".equals(n.type)) {
+
+                Intent intent = new Intent(context, PaymentDetailActivity.class);
+                // Truyền key "paymentID" cho chuẩn với bên PaymentDetailActivity
+                intent.putExtra("paymentID", n.refId);
                 context.startActivity(intent);
 
             }
