@@ -83,6 +83,17 @@
                 android:textAllCaps="false"
                 android:visibility="gone"
                 app:cornerRadius="8dp" />
+            <ImageButton
+                android:id="@+id/btnDeleteReport"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="Xóa"
+                android:src="@android:drawable/ic_menu_delete"
+                app:tint="#E53935"
+                android:visibility="gone" />
 
         </LinearLayout>
 

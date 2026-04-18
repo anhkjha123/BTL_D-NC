@@ -35,6 +35,7 @@ public class ReportDetailActivity extends AppCompatActivity {
     Button btnSend;
     RecyclerView rvComment;
     LinearLayout layoutReplyCard;
+    ImageButton btnDeleteReport;
     TextView tvReplyName, tvReplyContent, tvReplyTime;
 
 
@@ -69,7 +70,7 @@ public class ReportDetailActivity extends AppCompatActivity {
         tvReplyName = findViewById(R.id.tvReplyName);
         tvReplyContent = findViewById(R.id.tvReplyContent);
         tvReplyTime = findViewById(R.id.tvReplyTime);
-
+        btnDeleteReport = findViewById(R.id.btnDeleteReport);
         imgBack.setOnClickListener(v -> finish());
 
 
@@ -372,7 +373,7 @@ public class ReportDetailActivity extends AppCompatActivity {
 
                     showStatusUpdateDialog();
                 });
-
+                btnDeleteReport.setVisibility(View.GONE);
             }
             edtComment.setHint("Nhập phản hồi với tư cách Admin...");
         } else {
@@ -380,6 +381,8 @@ public class ReportDetailActivity extends AppCompatActivity {
             if (btnChangeStatus != null) {
                 btnChangeStatus.setVisibility(View.GONE);
             }
+            btnDeleteReport.setVisibility(View.VISIBLE);
+            btnDeleteReport.setOnClickListener(v -> deleteReportConfirm());
             edtComment.setHint("Nhập bình luận của bạn...");
         }
     }
@@ -388,5 +391,32 @@ public class ReportDetailActivity extends AppCompatActivity {
         super.onDestroy();
         if (commentListener != null) commentListener.remove();
         if (reportListener != null) reportListener.remove();
+    }
+    private void deleteReportConfirm() {
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa báo cáo")
+                .setMessage("Bạn có chắc chắn muốn xóa báo cáo này không? Hành động này không thể hoàn tác.")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    deleteReportFromFirestore();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void deleteReportFromFirestore() {
+        if (reportID == null || reportID.isEmpty()) return;
+
+        FirebaseFirestore.getInstance()
+                .collection("reports")
+                .document(reportID)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Đã xóa báo cáo", Toast.LENGTH_SHORT).show();
+                    // Đóng màn hình chi tiết sau khi xóa thành công
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Lỗi khi xóa báo cáo: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

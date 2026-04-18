@@ -29,6 +29,7 @@ public class BookmarkFragment extends Fragment {
 
     TextView txtSort;
     boolean isNewest = true;
+    private ListenerRegistration reportListener;
 
     @Nullable
     @Override
@@ -71,40 +72,45 @@ public class BookmarkFragment extends Fragment {
                 ? Query.Direction.DESCENDING
                 : Query.Direction.ASCENDING;
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        FirebaseFirestore.getInstance()
+        if (reportListener != null) {
+            reportListener.remove();
+        }
+        reportListener = FirebaseFirestore.getInstance()
                 .collection("reports")
                 .whereEqualTo("status", "Đang xử lý")
                 .whereEqualTo("userId", uid)
                 .orderBy("createdAt", direction)
-                .get();
-        FirebaseFirestore.getInstance()
-                .collection("reports")
-                .whereEqualTo("status", "Đang xử lý")
-                .whereEqualTo("userId", uid)
-                .orderBy("createdAt", direction)
-                .get()
-                .addOnSuccessListener(value -> {
+                .addSnapshotListener((value, error) -> {
 
-                    list.clear();
+                    // Kiểm tra an toàn: Fragment còn sống hay không
+                    if (!isAdded() || getContext() == null) return;
 
-                    for (DocumentSnapshot doc : value.getDocuments()) {
-                        Report r = doc.toObject(Report.class);
-
-                        if (r != null) {
-                            r.setId(doc.getId());
-                            list.add(r);
-                        }
+                    if (error != null) {
+                        Toast.makeText(getContext(), "Lỗi tải dữ liệu: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                        return;
                     }
 
-                    adapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
+                    if (value != null) {
+                        list.clear();
 
-                    Toast.makeText(getContext(),
-                            "Lỗi: " + e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            Report r = doc.toObject(Report.class);
+
+                            if (r != null) {
+                                r.setId(doc.getId());
+                                list.add(r);
+                            }
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
                 });
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (reportListener != null) {
+            reportListener.remove();
+        }
     }
 }
