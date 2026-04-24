@@ -139,7 +139,7 @@ public class ChatbotActivity extends AppCompatActivity {
     // ===== CALL GEMINI =====
     void callGeminiWithRetry(String userMessage, int retryCount) {
 
-        String apiKey = "AIzaSyCUe9MIONeFJiIpjVN5rxn8TxVd3sKd1E0";
+        String apiKey = "AIzaSyCr-NwN_Ucj6oeQw42pmQ3af-dMzkFdxrk";
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
@@ -150,7 +150,7 @@ public class ChatbotActivity extends AppCompatActivity {
 
 
             String prompt = "Bạn là trợ lý chung cư.\n" +
-                    "- Chỉ trả lời 1 câu không quá dài khoảng 7-8 từ\n" +
+                    "- Chỉ trả lời 2 câu không quá dài khoảng 9-10 từ\n" +
                     "- Chỉ đưa ra kết quả cuối\n" +
                     "- Không giải thích\n" +
                     "- Không dùng tiếng Anh\n" +

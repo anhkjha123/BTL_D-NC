@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/app_bg">
 
     <ImageView
         android:id="@+id/btnMenu"
@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:padding="12dp"
         android:src="@drawable/ic_menu"
-        app:tint="#000000"
+        app:tint="@color/text_primary"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Người dùng"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btnMenu"
@@ -41,7 +41,7 @@
         android:layout_marginEnd="16dp"
         android:padding="12dp"
         android:src="@drawable/ic_bell"
-        app:tint="#000000"
+        app:tint="@color/text_primary"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
@@ -60,7 +60,7 @@
         android:gravity="center"
         android:paddingHorizontal="4dp"
         android:text="1"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/app_on_primary"
         android:textSize="10sp"
         android:textStyle="bold"
         android:visibility="gone"

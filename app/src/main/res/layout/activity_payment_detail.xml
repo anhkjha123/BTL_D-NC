@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/app_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,8 +27,10 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="16dp"
+                android:background="@drawable/bg_circle_outline"
+                android:padding="10dp"
                 android:src="@drawable/back"
-                app:tint="#000000" />
+                app:tint="@color/text_primary" />
         </RelativeLayout>
 
         <LinearLayout
@@ -42,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tiêu đề thông báo"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -60,13 +62,14 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        app:tint="#4CAF50" /> <TextView
+                        app:tint="@color/app_primary" />
+                    <TextView
                     android:id="@+id/tvStartDateDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:text="Bắt đầu thu: --/--/----"
-                    android:textColor="#4CAF50"
+                    android:textColor="@color/app_primary"
                     android:textStyle="bold" />
                 </LinearLayout>
 
@@ -79,13 +82,14 @@
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        app:tint="#D32F2F" /> <TextView
+                        app:tint="@color/danger" />
+                    <TextView
                     android:id="@+id/tvEndDateDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:text="Hạn cuối: --/--/----"
-                    android:textColor="#D32F2F"
+                    android:textColor="@color/danger"
                     android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -94,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="20dp"
-                android:background="#EEEEEE" />
+                android:background="@color/app_outline" />
 
             <TextView
                 android:id="@+id/tvContentDetail"
@@ -102,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="6dp"
                 android:text="Nội dung chi tiết về khoản thu..."
-                android:textColor="#444444"
+                android:textColor="@color/text_primary"
                 android:textSize="16sp" />
 
             <TextView
@@ -111,7 +115,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_gravity="center_horizontal"
                 android:text="Quét mã QR để thanh toán"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:textStyle="bold" />
 
             <ImageView
@@ -130,11 +134,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="40dp"
-                android:backgroundTint="#000000"
                 android:text="Tôi đã thanh toán"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="12dp" />
+                style="@style/Widget.App.Button.Primary" />
 
         </LinearLayout>
     </LinearLayout>

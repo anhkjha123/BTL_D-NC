@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:padding="16dp">
+    android:background="@color/app_bg"
+    android:padding="@dimen/space_16">
 
     <TextView
         android:id="@+id/tvMainTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Các báo cáo sự cố"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="Báo cáo sự cố mà người dân gặp phải khi sinh sống"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/text_secondary"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,8 @@
             android:paddingEnd="16dp"
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="12dp"
-            android:textColorHint="#9E9E9E"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -74,8 +75,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Lọc"
-            android:textColor="#00BCD4"
-            android:textSize="14sp" android:paddingHorizontal="16dp" android:paddingVertical="8dp"    android:textStyle="bold"
+            android:textColor="@color/app_primary"
+            android:textSize="14sp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:textStyle="bold"
             android:background="@drawable/bg_chip_blue_light" />
 
     </com.google.android.material.chip.ChipGroup>
@@ -86,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Báo cáo"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/text_tertiary"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvListTitle" />
@@ -107,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sắp xếp: Mới nhất"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/tvResultCount"
         app:layout_constraintEnd_toEndOf="parent"

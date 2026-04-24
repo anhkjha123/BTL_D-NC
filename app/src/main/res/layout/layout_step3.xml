@@ -1,24 +1,26 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="@dimen/space_16"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff">
+    android:background="@color/app_bg">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Chọn ảnh &amp; loại sự cố"
         android:textSize="22sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"/>
 
     <Button
         android:id="@+id/btnPickImage"
         android:text="Chọn ảnh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"/>
+        android:layout_height="@dimen/height_button"
+        android:layout_marginTop="12dp"
+        style="@style/Widget.App.Button.Outline"/>
 
     <!-- preview 1 ảnh -->
     <ImageView
@@ -26,24 +28,29 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="centerCrop"
+        android:background="@color/app_surface_alt"
         android:layout_marginTop="12dp"/>
 
     <Spinner
         android:id="@+id/spType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input"/>
 
     <Button
         android:id="@+id/btnSubmit"
         android:text="Hoàn tất"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
+        android:layout_height="@dimen/height_button"
+        android:layout_marginTop="16dp"
+        style="@style/Widget.App.Button.Primary"/>
 
     <Button
         android:id="@+id/btnBack3"
         android:text="Back"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/height_button"
+        android:layout_marginTop="8dp"
+        style="@style/Widget.App.Button.Outline"/>
 </LinearLayout>

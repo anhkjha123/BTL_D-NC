@@ -2,27 +2,31 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/app_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="@dimen/space_16">
 
         <!-- Nút back -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_outline"
+            android:padding="6dp"
             android:src="@drawable/back"
-            android:contentDescription="Back" />
+            app:tint="@color/text_primary" />
         <!-- Ảnh -->
         <ImageView
             android:id="@+id/img"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop" />
 
@@ -31,7 +35,7 @@
             android:id="@+id/tvTitle"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#000"
+            android:textColor="@color/text_primary"
             android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -40,7 +44,7 @@
         <TextView
             android:id="@+id/tvContent"
             android:textSize="16sp"
-            android:textColor="#333"
+            android:textColor="@color/text_primary"
             android:layout_marginTop="16dp"
             android:lineSpacingExtra="4dp"
             android:layout_width="match_parent"
@@ -61,16 +65,22 @@
                 android:id="@+id/edtComment"
                 android:layout_weight="1"
                 android:hint="Viết bình luận..."
-                android:background="#EEE"
-                android:padding="10dp"
+                android:background="@drawable/bg_input"
+                android:padding="12dp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"/>
 
             <Button
                 android:id="@+id/btnSend"
                 android:text="Gửi"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:minHeight="44dp"
+                android:backgroundTint="@color/app_primary"
+                android:textColor="@color/app_on_primary"/>
         </LinearLayout>
 
     </LinearLayout>

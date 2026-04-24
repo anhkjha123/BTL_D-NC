@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
-    android:padding="24dp">
+    android:padding="@dimen/space_24">
 
     <View
         android:layout_width="60dp"
         android:layout_height="4dp"
-        android:background="#DDDDDD"
+        android:background="@color/app_outline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Lọc"
-        android:textColor="@color/text_grey_900"
+        android:textColor="@color/text_primary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="Hoạt động với các tin tức"
-        android:textColor="#9E9E9E"
+        android:textColor="@color/text_secondary"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvFilterHeader" />
@@ -40,11 +40,11 @@
         android:id="@+id/btnAdminManage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/bg_grey_100"
+        android:backgroundTint="@color/app_surface_alt"
         android:text="Quản lý"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         android:layout_marginTop="4dp"
-        app:cornerRadius="8dp"
+        app:cornerRadius="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvFilterHeader" />
 
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Khoảng thời gian"
-        android:textColor="@color/text_grey_600"
+        android:textColor="@color/text_primary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Trạng thái ( 0 )"
-        android:textColor="@color/text_grey_600"
+        android:textColor="@color/text_primary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:text="Danh mục ( 0 )"
-        android:textColor="@color/text_grey_600"
+        android:textColor="@color/text_primary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -144,10 +144,8 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
-            android:backgroundTint="@color/bg_grey_100"
             android:text="XÓA"
-            android:textColor="#000000"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Outline" />
 
         <Button
             android:id="@+id/btnApply"
@@ -155,10 +153,8 @@
             android:layout_height="60dp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:backgroundTint="@color/bg_black_apply"
             android:text="XONG"
-            android:textColor="#FFFFFF"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Primary" />
 
     </LinearLayout>
 

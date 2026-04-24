@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/app_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,11 +13,14 @@
 
         <ImageButton
             android:id="@+id/imgBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_outline"
+            android:padding="6dp"
             android:src="@drawable/back"
-            android:contentDescription="Back" />
+            app:tint="@color/text_primary" />
 
         <ImageView
             android:id="@+id/imgReport"
@@ -25,7 +28,7 @@
             android:layout_height="220dp"
             android:scaleType="centerCrop"
             android:layout_marginTop="24dp"
-            android:background="#F2F2F2"
+            android:background="@color/app_surface_alt"
             android:visibility="gone" />
 
         <TextView
@@ -35,7 +38,7 @@
             android:text="Chi tiết báo cáo"
             android:textStyle="bold"
             android:textSize="24sp"
-            android:textColor="#111111"
+            android:textColor="@color/text_primary"
             android:layout_marginTop="20dp" />
 
         <TextView
@@ -43,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13sp"
-            android:textColor="#777777"
+            android:textColor="@color/text_secondary"
             android:layout_marginTop="6dp" />
 
         <LinearLayout
@@ -59,7 +62,7 @@
                 android:text="Trạng thái: "
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:textColor="#222222" />
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:id="@+id/tvStatus"
@@ -69,30 +72,33 @@
                 android:text="Đang xử lý"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:textColor="#E53935" />
+                android:textColor="@color/danger" />
 
             <Button
                 android:id="@+id/btnChangeStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="40dp"
-                android:backgroundTint="#222222"
                 android:text="Sửa"
-                android:textColor="#FFFFFF"
                 android:textSize="13sp"
-                android:textAllCaps="false"
                 android:visibility="gone"
-                app:cornerRadius="8dp" />
+                style="@style/Widget.App.Button.Primary"
+                app:cornerRadius="10dp"
+                android:minWidth="0dp"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                 />
             <ImageButton
                 android:id="@+id/btnDeleteReport"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_circle_outline"
+                android:padding="12dp"
                 android:contentDescription="Xóa"
                 android:src="@android:drawable/ic_menu_delete"
-                app:tint="#E53935"
+                app:tint="@color/danger"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -109,7 +115,7 @@
                 android:text="Loại sự cố: "
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:textColor="#222222" />
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:id="@+id/tvType"
@@ -117,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:text="Nước"
                 android:textSize="18sp"
-                android:textColor="#444444" />
+                android:textColor="@color/text_secondary" />
         </LinearLayout>
 
         <TextView
@@ -125,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="17sp"
-            android:textColor="#222222"
+            android:textColor="@color/text_primary"
             android:lineSpacingExtra="5dp"
             android:layout_marginTop="18dp"
             android:text="Nội dung báo cáo..." />
@@ -137,7 +143,7 @@
             android:text="Phản hồi của Ban quản lý"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="#222222"
+            android:textColor="@color/text_primary"
             android:layout_marginTop="28dp" />
 
         <LinearLayout
@@ -157,14 +163,14 @@
                 android:text="Quản lý"
                 android:textStyle="bold"
                 android:textSize="15sp"
-                android:textColor="#111111" />
+                android:textColor="@color/text_primary" />
 
             <TextView
                 android:id="@+id/tvReplyTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:textColor="#777777"
+                android:textColor="@color/text_secondary"
                 android:layout_marginTop="2dp" />
 
             <TextView
@@ -173,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:text="Nội dung phản hồi"
                 android:textSize="15sp"
-                android:textColor="#444444"
+                android:textColor="@color/text_primary"
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
@@ -183,7 +189,7 @@
             android:text="Bình luận / phản hồi"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:textColor="#222222"
+            android:textColor="@color/text_primary"
             android:layout_marginTop="28dp" />
 
         <TextView
@@ -192,7 +198,7 @@
             android:layout_height="wrap_content"
             android:text="Chưa có phản hồi nào"
             android:textSize="14sp"
-            android:textColor="#777777"
+            android:textColor="@color/text_secondary"
             android:layout_marginTop="10dp"
             android:visibility="gone" />
 
@@ -213,7 +219,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:padding="8dp"
-            android:background="#F6F6F6">
+            android:background="@color/app_surface">
 
             <EditText
                 android:id="@+id/edtComment"
@@ -223,13 +229,18 @@
                 android:hint="Nhập phản hồi..."
                 android:background="@android:color/transparent"
                 android:padding="12dp"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
 
             <Button
                 android:id="@+id/btnSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gửi" />
+                android:text="Gửi"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/app_primary"
+                android:textColor="@color/app_on_primary" />
         </LinearLayout>
 
     </LinearLayout>

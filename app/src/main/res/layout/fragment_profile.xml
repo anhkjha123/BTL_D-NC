@@ -1,10 +1,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#F8F8F8"
+    android:background="@color/app_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:padding="16dp"
+        android:padding="@dimen/space_16"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,7 +20,8 @@
                 android:textStyle="bold"
                 android:layout_alignParentStart="true"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+                android:layout_width="wrap_content"
+                android:textColor="@color/text_primary"/>
 
             <ImageView
                 android:id="@+id/btnSetting"
@@ -38,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="username"
-            android:textColor="#888"
+            android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp"/>
 
         <ImageView
@@ -54,13 +55,14 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:textColor="@color/text_primary"/>
 
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#888"/>
+            android:textColor="@color/text_secondary"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,7 +70,8 @@
             android:text="Thông tin căn hộ"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:textColor="@color/text_primary"/>
 
         <TextView
             android:id="@+id/tvApartment"

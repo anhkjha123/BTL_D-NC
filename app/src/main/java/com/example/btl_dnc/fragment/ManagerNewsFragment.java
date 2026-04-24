@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 public class ManagerNewsFragment extends Fragment {
 
-    private ImageView btnBack;
+
     private EditText edtSearchNews;
     private ListenerRegistration newsListener;
     private RecyclerView rvNews;
@@ -43,15 +43,11 @@ public class ManagerNewsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_manager_news, container, false);
 
-        btnBack = view.findViewById(R.id.btnBack);
+
         edtSearchNews = view.findViewById(R.id.edtSearchNews);
         rvNews = view.findViewById(R.id.rvNews);
 
-        btnBack.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().onBackPressed();
-            }
-        });
+
 
         newsList = new ArrayList<>();
         filteredList = new ArrayList<>();

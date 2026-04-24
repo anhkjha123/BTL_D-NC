@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/app_bg">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Admin Profile"
-                        android:textColor="#000000"
+                        android:textColor="@color/text_primary"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="admin.dorothy@email.com"
-                        android:textColor="#9E9E9E"
+                        android:textColor="@color/text_secondary"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -52,10 +52,10 @@
                     android:layout_height="48dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+
                     android:padding="12dp"
                     android:src="@drawable/ic_setting"
-                    app:tint="#000000" />
+                    app:tint="@color/text_primary" />
             </RelativeLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Độ Rothy"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Xinh nhưng bị khùng?!"
-                android:textColor="#757575"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
             <TextView
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="Bài đăng của bạn"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sắp xếp: "
-                    android:textColor="#9E9E9E"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
 
                 <TextView
@@ -114,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mới"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -123,7 +123,7 @@
                     android:layout_height="16dp"
                     android:layout_marginStart="4dp"
                     android:src="@drawable/arrow_down"
-                    app:tint="#000000" />
+                    app:tint="@color/text_primary" />
 
                 <View
                     android:layout_width="0dp"
@@ -137,7 +137,7 @@
                     android:layout_marginEnd="8dp"
                     android:padding="2dp"
                     android:src="@drawable/ic_grid"
-                    app:tint="#000000" />
+                    app:tint="@color/text_primary" />
 
                 <ImageView
                     android:id="@+id/btnViewList"
@@ -145,7 +145,7 @@
                     android:layout_height="28dp"
                     android:padding="2dp"
                     android:src="@drawable/ic_list"
-                    app:tint="#03A9F4" />
+                    app:tint="@color/app_primary" />
 
             </LinearLayout>
 
@@ -165,12 +165,9 @@
         android:layout_height="56dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="#1A1A1A"
         android:text="Tạo bài đăng mới"
-        android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:textAllCaps="false"
-        app:cornerRadius="12dp"
+        style="@style/Widget.App.Button.Primary"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

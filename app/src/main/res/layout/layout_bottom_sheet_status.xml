@@ -5,20 +5,20 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_bottom_sheet"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/space_24">
 
     <View
         android:layout_width="48dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:background="#DDDDDD" />
+        android:background="@color/app_outline" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Cập nhật trạng thái"
-        android:textColor="#000000"
+        android:textColor="@color/text_primary"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Chọn trạng thái mới cho báo cáo này"
-        android:textColor="#757575"
+        android:textColor="@color/text_secondary"
         android:textSize="14sp" />
 
     <RadioGroup
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="14dp"
             android:text="Chờ duyệt"
-            android:textColor="#222222"
+            android:textColor="@color/text_primary"
             android:textSize="16sp" />
 
         <RadioButton
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="14dp"
             android:text="Đang xử lý"
-            android:textColor="#222222"
+            android:textColor="@color/text_primary"
             android:textSize="16sp" />
 
         <RadioButton
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="14dp"
             android:text="Đã xử lý"
-            android:textColor="#222222"
+            android:textColor="@color/text_primary"
             android:textSize="16sp" />
     </RadioGroup>
 
@@ -76,10 +76,8 @@
             android:layout_height="56dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#F5F5F5"
             android:text="Hủy"
-            android:textColor="#000000"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Outline" />
 
         <Button
             android:id="@+id/btnConfirmStatus"
@@ -87,9 +85,7 @@
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#222222"
             android:text="Xác nhận"
-            android:textColor="#FFFFFF"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Primary" />
     </LinearLayout>
 </LinearLayout>

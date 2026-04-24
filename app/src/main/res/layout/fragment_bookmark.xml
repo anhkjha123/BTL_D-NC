@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="16dp"
+    android:padding="@dimen/space_16"
     android:orientation="vertical"
-    android:background="#F8F8F8"
+    android:background="@color/app_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,13 +10,14 @@
         android:layout_height="wrap_content"
         android:text="Báo cáo sự cố"
         android:textSize="24sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Những vấn đề, sự cố bạn gặp khi sống"
-        android:textColor="#888"
+        android:textColor="@color/text_secondary"
         android:layout_marginTop="4dp"/>
 
     <TextView
@@ -26,7 +27,8 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        android:layout_width="wrap_content"
+        android:textColor="@color/text_primary"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvReports"
         android:layout_width="match_parent"
@@ -40,12 +42,9 @@
         android:layout_marginRight="10dp"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_button_dark"
         android:text="Tạo báo cáo sự cố mới"
-        android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:textAllCaps="false"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        />
+        style="@style/Widget.App.Button.Primary" />
 </LinearLayout>

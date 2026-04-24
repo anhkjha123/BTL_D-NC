@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#FFFFFF"
-    android:padding="24dp">
+    android:background="@color/app_bg"
+    android:padding="@dimen/space_24">
 
     <LinearLayout
         android:id="@+id/step1"
@@ -20,13 +20,13 @@
             android:text="Họ và tên"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:textColor="#000000" />
+            android:textColor="@color/text_primary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Xem xét lại tài khoản và tên người thông báo"
-            android:textColor="#757575"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:layout_marginBottom="32dp" />
 
@@ -39,7 +39,7 @@
             android:drawablePadding="12dp"
             android:padding="16dp"
             android:enabled="false"
-            android:textColor="#000000" />
+            android:textColor="@color/text_primary" />
 
         <EditText
             android:id="@+id/edtAdminEmail"
@@ -51,7 +51,7 @@
             android:drawablePadding="12dp"
             android:padding="16dp"
             android:enabled="false"
-            android:textColor="#000000" />
+            android:textColor="@color/text_primary" />
 
         <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
 
@@ -60,9 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Lưu &amp; Tiếp tục"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#000000"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Primary" />
         <TextView
             android:id="@+id/btnBack1"
             android:layout_width="match_parent"
@@ -70,7 +68,8 @@
             android:text="Back"
             android:textAlignment="center"
             android:padding="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
     </LinearLayout>
 
     <LinearLayout
@@ -86,13 +85,13 @@
             android:text="Tạo nội dung thông báo đóng phí"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:textColor="#000000" />
+            android:textColor="@color/text_primary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Điền nội dung bạn muốn thông báo tại đây"
-            android:textColor="#757575"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:layout_marginBottom="32dp" />
 
@@ -102,7 +101,9 @@
             android:layout_height="56dp"
             android:background="@drawable/bg_input_gray"
             android:hint="Điền tiêu đề tại đây"
-            android:padding="16dp" />
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
 
         <EditText
             android:id="@+id/edtContent"
@@ -112,7 +113,9 @@
             android:background="@drawable/bg_input_gray"
             android:gravity="top|start"
             android:hint="Viết thông báo của bạn tại đây"
-            android:padding="16dp" />
+            android:padding="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
 
         <Space android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
 
@@ -121,9 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Chuyển tiếp"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#000000"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Primary" />
         <TextView
             android:id="@+id/btnBack2"
             android:layout_width="match_parent"
@@ -131,7 +132,8 @@
             android:text="Back"
             android:textAlignment="center"
             android:padding="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
     </LinearLayout>
 
     <LinearLayout
@@ -147,7 +149,7 @@
             android:text="Cài đặt ngày đóng phí"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:textColor="#000000" />
+            android:textColor="@color/text_primary" />
 
         <EditText
             android:id="@+id/edtStartDate"
@@ -158,7 +160,9 @@
             android:hint="Ngày bắt đầu (VD: 01/11/2026)"
             android:padding="16dp"
             android:focusable="false"
-            android:clickable="true" />
+            android:clickable="true"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
 
         <EditText
             android:id="@+id/edtEndDate"
@@ -169,7 +173,9 @@
             android:hint="Hạn cuối đóng phí (VD: 15/11/2026)"
             android:padding="16dp"
             android:focusable="false"
-            android:clickable="true" />
+            android:clickable="true"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"/>
 
         <LinearLayout
             android:id="@+id/btnPickQR"
@@ -189,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chọn ảnh QR nhận tiền"
-                android:textColor="#03A9F4"
+                android:textColor="@color/app_primary"
                 android:layout_marginTop="8dp"
                 android:textStyle="bold"/>
         </LinearLayout>
@@ -201,9 +207,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Chuyển tiếp"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#000000"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Primary" />
         <TextView
             android:id="@+id/btnBack3"
             android:layout_width="match_parent"
@@ -211,7 +215,8 @@
             android:text="Back"
             android:textAlignment="center"
             android:padding="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
     </LinearLayout>
 
     <LinearLayout
@@ -227,7 +232,7 @@
             android:text="Chọn ảnh thumbnail"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:textColor="#000000" />
+            android:textColor="@color/text_primary" />
 
         <LinearLayout
             android:id="@+id/btnPickThumb"
@@ -254,9 +259,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Hoàn tất"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#000000"
-            app:cornerRadius="12dp" />
+            style="@style/Widget.App.Button.Primary" />
         <TextView
             android:id="@+id/btnBack4"
             android:layout_width="match_parent"
@@ -264,7 +267,8 @@
             android:text="Back"
             android:textAlignment="center"
             android:padding="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
     </LinearLayout>
 
 </LinearLayout>

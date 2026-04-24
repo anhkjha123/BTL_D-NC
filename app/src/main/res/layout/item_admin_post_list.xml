@@ -31,7 +31,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="Lịch thu phí quản lý tháng 2"
-            android:textColor="#000000"
+        android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Ngày 2 Tháng 2 Năm 2026"
-            android:textColor="#9E9E9E"
+        android:textColor="@color/text_tertiary"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -53,6 +53,6 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="4dp"
         android:src="@drawable/ic_close"
-        app:tint="#757575" />
+        app:tint="@color/text_secondary" />
 
 </LinearLayout>

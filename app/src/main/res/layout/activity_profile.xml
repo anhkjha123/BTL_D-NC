@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#FFFFFF">
+    android:padding="@dimen/space_16"
+    android:background="@color/app_bg">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,13 +15,14 @@
             android:text="Profile"
             android:textSize="28sp"
             android:textStyle="bold"
+            android:textColor="@color/text_primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <!-- Username -->
         <TextView
             android:id="@+id/tvUsername"
-            android:textColor="#888"
+            android:textColor="@color/text_secondary"
             android:textSize="16sp"
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
@@ -41,13 +42,14 @@
             android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
+            android:textColor="@color/text_primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <!-- Email -->
         <TextView
             android:id="@+id/tvEmail"
-            android:textColor="#888"
+            android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -58,6 +60,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginTop="24dp"
+            android:textColor="@color/text_primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -86,12 +89,10 @@
         <Button
             android:id="@+id/btnBlock"
             android:text="Chặn người dùng"
-            android:textColor="#fff"
-            android:background="#000"
             android:layout_marginTop="32dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            />
+            style="@style/Widget.App.Button.Primary" />
 
     </LinearLayout>
 </ScrollView>
